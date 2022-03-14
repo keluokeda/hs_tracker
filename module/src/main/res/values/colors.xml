@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="module_purple_200">#FFBB86FC</color>
+    <color name="module_purple_500">#FF6200EE</color>
+    <color name="module_purple_700">#FF3700B3</color>
+    <color name="module_teal_200">#FF03DAC5</color>
+    <color name="module_teal_700">#FF018786</color>
+    <color name="module_black">#FF000000</color>
+    <color name="module_white">#FFFFFFFF</color>
+
+    <color name="module_mage">#69CCF0</color>
+    <color name="module_warlock">#9482C9</color>
+    <color name="module_druid">#FF7D0A</color>
+    <color name="module_rogue">#FFF569</color>
+    <color name="module_shaman">#0070DE</color>
+    <color name="module_hunter">#ABD473</color>
+    <color name="module_priest">#FFFFFF</color>
+    <color name="module_warrior">#C79C6E</color>
+    <color name="module_paladin">#F58CBA</color>
+    <color name="module_demon_hunter">#A330C9</color>
+    <color name="module_neutral">#ccc</color>
+    <color name="module_death_knight">#C41F3B</color>
+    <color name="module_divider">#ccc</color>
+</resources>

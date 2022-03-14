@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <color name="module_filter_activity_color">#ddd</color>
+
+    <!-- Base application theme. -->
+    <style name="module_Theme.Hs_tracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/module_purple_500</item>
+        <item name="colorPrimaryVariant">@color/module_purple_700</item>
+        <item name="colorOnPrimary">@color/module_white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/module_teal_200</item>
+        <item name="colorSecondaryVariant">@color/module_teal_700</item>
+        <item name="colorOnSecondary">@color/module_black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+
+
+    <style name="module_Theme.Hs_tracker.Main" parent="module_Theme.Hs_tracker">
+
+        <item name="android:windowBackground">#66000000</item>
+    </style>
+
+    <style name="module_Theme.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:ignore="NewApi">shortEdges</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/module_bg_splash</item>
+    </style>
+</resources>

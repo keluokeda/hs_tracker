@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi)
+    kapt(libs.moshi.codegen)
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+//    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+}
