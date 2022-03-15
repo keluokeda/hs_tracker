@@ -22,6 +22,7 @@ import com.ke.hs_tracker.module.*
 import com.ke.hs_tracker.module.databinding.ModuleActivityPermissionsBinding
 import com.ke.hs_tracker.module.ui.main.MainActivity
 import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
+import com.ke.hs_tracker.module.ui.writeconfig.WriteConfigActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -42,15 +43,15 @@ class PermissionsActivity : AppCompatActivity() {
 
         launchAndRepeatWithViewLifecycle {
             viewModel.navigationActions.collect {
-                val intent = when (it) {
-                    PermissionsNavigationAction.NavigateToMain -> {
-                        Intent(this@PermissionsActivity, MainActivity::class.java)
-                    }
-                    PermissionsNavigationAction.NavigateToSync -> {
-                        Intent(this@PermissionsActivity, SyncCardDataActivity::class.java)
-                    }
-                }
-                startActivity(intent)
+//                val intent = when (it) {
+//                    PermissionsNavigationAction.NavigateToMain -> {
+//                        Intent(this@PermissionsActivity, MainActivity::class.java)
+//                    }
+//                    PermissionsNavigationAction.NavigateToSync -> {
+//                        Intent(this@PermissionsActivity, SyncCardDataActivity::class.java)
+//                    }
+//                }
+                startActivity(Intent(this@PermissionsActivity, WriteConfigActivity::class.java))
                 finish()
             }
         }

@@ -105,6 +105,23 @@
         android:background="@color/module_divider"
         app:layout_constraintTop_toBottomOf="@id/sync" />
 
+    <TextView
+        android:id="@+id/rewrite_config_file"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="?selectableItemBackground"
+        android:padding="16dp"
+        android:text="@string/module_rewrite_config_file"
+        app:layout_constraintTop_toBottomOf="@id/test" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/module_divider"
+       />
+
     <LinearLayout
         android:id="@+id/ll_contact_author"
         android:layout_width="match_parent"

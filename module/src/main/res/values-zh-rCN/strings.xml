@@ -56,5 +56,13 @@
     <string name="module_theme_dark">深色</string>
     <string name="module_theme_follow_system">跟随系统</string>
     <string name="module_code_parser">卡组代码解析</string>
+    <string name="module_diagnose">诊断</string>
+    <string name="module_check_config_file">检查Config文件</string>
+    <string name="module_write_config_file">写入配置文件</string>
+    <string name="module_write_in">写入</string>
+    <string name="module_force_write">强制写入</string>
+    <string name="module_hint_write_config">为了读取日志，我们将把以下内容写入到炉石目录的log.config文件中</string>
+    <string name="module_write_config_failed">写入配置失败</string>
+    <string name="module_rewrite_config_file">重写配置文件</string>
 
 </resources>

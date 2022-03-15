@@ -113,7 +113,7 @@ const val HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone"
 /**
  * 写入log.config文件
  */
-suspend fun Context.writeLogConfigFile(): Boolean {
+suspend fun Context.writeLogConfigFile(forceWrite: Boolean = false): Boolean {
     return withContext(Dispatchers.IO) {
 
 
@@ -123,8 +123,12 @@ suspend fun Context.writeLogConfigFile(): Boolean {
         val file = findHSDataFilesDir(fileName)
         if (file != null) {
             //文件已存在
-            "log.config文件已存在 不需要写入".log()
-            return@withContext true
+            "log.config文件已存在".log()
+            if (forceWrite) {
+                file.delete()
+            } else {
+                return@withContext true
+            }
         }
         val configFile = documentFile.createFile("plain/text", fileName)
             ?: return@withContext false

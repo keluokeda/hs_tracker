@@ -2,8 +2,8 @@ package com.ke.hs_tracker.module.ui.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleDialogCardPreviewBinding
@@ -43,8 +43,24 @@ class CardAdapter : BaseViewBindingAdapter<CardBean, ModuleItemCardBinding>() {
         viewType: Int,
         position: Int
     ) {
-        viewBinding.name.text = item.card.name + " " + item.count
+        viewBinding.name.text = item.card.name
         viewBinding.cost.text = item.card.cost.toString()
+        viewBinding.count.text = item.count.toString()
+
+        item.card.rarity?.apply {
+            viewBinding.name.setTextColor(
+                ResourcesCompat.getColor(
+                    viewBinding.root.context.resources,
+                    colorRes,
+                    null
+                )
+            )
+
+        }
+
+        Glide.with(viewBinding.imageTile)
+            .load("https://art.hearthstonejson.com/v1/tiles/${item.card.id}.png")
+            .into(viewBinding.imageTile)
     }
 
     override fun createViewBinding(

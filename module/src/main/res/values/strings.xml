@@ -56,4 +56,12 @@
     <string name="module_theme_dark">Dark</string>
     <string name="module_theme_follow_system">Follow System</string>
     <string name="module_code_parser">Deck Code Parser</string>
+    <string name="module_diagnose">Diagnose</string>
+    <string name="module_check_config_file">Check Config File</string>
+    <string name="module_write_config_file">Write Config File</string>
+    <string name="module_write_in">Write In</string>
+    <string name="module_force_write">Force Write</string>
+    <string name="module_hint_write_config">In order to read the log, we will write the contents to the log.config file in the Hearthstone directory</string>
+    <string name="module_write_config_failed">Write Config Failed</string>
+    <string name="module_rewrite_config_file">Rewrite Config File</string>
 </resources>

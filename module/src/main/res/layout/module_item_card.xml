@@ -3,32 +3,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="8dp">
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_tile"
+        android:contentDescription="@null"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foreground="#55000000"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/module_image_tile"
+        app:layout_constraintStart_toEndOf="@id/image_cost"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="256:49"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_cost"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:contentDescription="@null"
+        android:src="@drawable/module_image_bg_cost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+         />
 
     <TextView
         android:id="@+id/cost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/module_white"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:padding="4dp"
+        android:textColor="@color/module_white"
+        app:layout_constraintTop_toTopOf="@id/image_cost"
+        app:layout_constraintBottom_toBottomOf="@id/image_cost"
+        app:layout_constraintStart_toStartOf="@id/image_cost"
+        app:layout_constraintEnd_toEndOf="@id/image_cost"
         tools:text="2" />
 
     <TextView
         android:id="@+id/name"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:textColor="@color/module_white"
+        app:layout_constraintStart_toEndOf="@id/cost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+        android:autoSizeTextType="uniform"
+        tools:text="始生研习" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:text="2"
         android:gravity="end"
         android:textColor="@color/module_white"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cost"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="始生研习 1" />
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+        android:autoSizeTextType="uniform"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

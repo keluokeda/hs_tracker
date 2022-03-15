@@ -28,12 +28,13 @@ class PermissionsViewModel @Inject constructor(
     internal fun next() {
 
         viewModelScope.launch {
-            writeLogConfigFileUseCase(true)
-            if (getDatabaseCardCountUseCase(Unit).successOr(0) == 0) {
-                _navigationActions.send(PermissionsNavigationAction.NavigateToSync)
-            } else {
-                _navigationActions.send(PermissionsNavigationAction.NavigateToMain)
-            }
+            _navigationActions.send(PermissionsNavigationAction.NavigateToWriteConfig)
+//            writeLogConfigFileUseCase(true)
+//            if (getDatabaseCardCountUseCase(Unit).successOr(0) == 0) {
+//                _navigationActions.send(PermissionsNavigationAction.NavigateToSync)
+//            } else {
+//                _navigationActions.send(PermissionsNavigationAction.NavigateToMain)
+//            }
         }
     }
 }
@@ -43,7 +44,7 @@ sealed interface PermissionsNavigationAction {
 //        val message: String
 //    ) : PermissionsNavigationAction
 
-    object NavigateToMain : PermissionsNavigationAction
+//    object NavigateToMain : PermissionsNavigationAction
 
-    object NavigateToSync : PermissionsNavigationAction
+    object NavigateToWriteConfig : PermissionsNavigationAction
 }

@@ -3,12 +3,15 @@ package com.ke.hs_tracker.module.ui.settings
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.ke.hs_tracker.module.BuildConfig
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivitySettingsBinding
 import com.ke.hs_tracker.module.ui.deck.DeckCodeParserActivity
 import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
 import com.ke.hs_tracker.module.ui.test.TestActivity
 import com.ke.hs_tracker.module.ui.theme.ThemeActivity
+import com.ke.hs_tracker.module.ui.writeconfig.WriteConfigActivity
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ModuleActivitySettingsBinding
@@ -22,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
 
         }
         setTitle(R.string.module_settings)
-//        binding.test.isVisible = BuildConfig.DEBUG
+        binding.test.isVisible = BuildConfig.DEBUG
         binding.test.setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
         }
@@ -38,6 +41,12 @@ class SettingsActivity : AppCompatActivity() {
         binding.codeParser.setOnClickListener {
             startActivity(Intent(this, DeckCodeParserActivity::class.java))
 
+        }
+
+        binding.rewriteConfigFile.setOnClickListener {
+            val intent = Intent(this, WriteConfigActivity::class.java)
+            intent.putExtra(WriteConfigActivity.EXTRA_REWRITE, true)
+            startActivity(intent)
         }
 
         binding.sync.setOnClickListener {

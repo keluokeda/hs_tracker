@@ -37,3 +37,4 @@ dependencyResolutionManagement {
 rootProject.name = "hs_tracker"
 include ':app'
 include ':module'
+include ':writer'

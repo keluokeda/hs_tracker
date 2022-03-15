@@ -19,10 +19,7 @@ import com.ke.mvvm.base.data.successOr
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -84,9 +81,9 @@ class MainViewModel @Inject constructor(
     private val powerParser = PowerParserImpl()
 
 
-    private lateinit var allCard: List<Card>
+    private var allCard: List<Card> = emptyList()
 
-    private lateinit var deckCardList: List<CardBean>
+    private var deckCardList: List<CardBean> = emptyList()
 
     init {
 
@@ -118,6 +115,7 @@ class MainViewModel @Inject constructor(
         }
         viewModelScope.launch {
             powerFileObserver.start()
+                .flowOn(dispatcher)
                 .collect {
                     it.forEach { line ->
                         powerParser.parse(line)
@@ -242,7 +240,12 @@ class MainViewModel @Inject constructor(
         //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=106 zone=PLAY zonePos=0 cardId= player=1] tag=ZONE value=GRAVEYARD
         //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=5 zone=SECRET zonePos=0 cardId= player=1] tag=COST value=2
         //如果对面打出一张奥秘拍 会直接进入墓地
-        val cardId = entity.cardId ?: throw RuntimeException("没有id $entity")
+        val cardId = entity.cardId
+//            ?: throw RuntimeException("没有id $entity")
+        if (cardId == null) {
+            "发现了一个没有id的卡牌插入到墓地 $entity".log()
+            return
+        }
         val cardEntity = findCardById(cardId)
 
         "插入一张牌到墓地 $cardEntity $entity".log()
@@ -336,10 +339,17 @@ class MainViewModel @Inject constructor(
             insert: Boolean,
             dispatcher: CoroutineDispatcher = Dispatchers.IO
         ) = withContext(dispatcher) {
+            if (card.type == CardType.Enchantment) {
+                return@withContext
+            }
             val list = mutableStateFlow.value.toMutableList()
             val bean = list.find {
                 it.card.id == card.id
             }
+//            if (bean?.card?.type == CardType.Enchantment) {
+//                //忽略衍生牌
+//                return@withContext
+//            }
             if (bean == null) {
                 list.add(CardBean(card, 1))
             } else {
