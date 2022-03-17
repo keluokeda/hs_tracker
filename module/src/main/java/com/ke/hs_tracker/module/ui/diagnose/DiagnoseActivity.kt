@@ -6,6 +6,9 @@ import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivityDiagnoseBinding
 import com.ke.hs_tracker.module.findHSDataFilesDir
 
+/**
+ * 诊断
+ */
 class DiagnoseActivity : AppCompatActivity() {
 
 

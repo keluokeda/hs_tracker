@@ -1,61 +1,64 @@
 package com.ke.hs_tracker.module.entity
 
+import androidx.annotation.StringRes
+import com.ke.hs_tracker.module.R
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
 
 /**
  * 随从种族
  */
-enum class Race {
+enum class Race(@StringRes val titleRes: Int? = null) {
     /**
      * 海盗
      */
-    Pirate,
+    Pirate(R.string.module_pirate),
 
     /**
      * 机械
      */
-    Mechanical,
+    Mechanical(R.string.module_mechanical),
 
     /**
      * 龙
      */
-    Dragon,
+    Dragon(R.string.module_dragon),
 
     /**
      * 野兽
      */
-    Beast,
+    Beast(R.string.module_beast),
 
     /**
      * 鱼人
      */
-    Murloc,
+    Murloc(R.string.module_murloc),
 
     /**
      * 恶魔
      */
-    Demon,
+    Demon(R.string.module_demon),
 
     /**
      * 图腾
      */
-    Totem,
+    Totem(R.string.module_totem),
 
     /**
      * 元素
      */
-    Elemental,
+    Elemental(R.string.module_elemental),
 
-    /**
-     * 全部
-     */
-    All,
 
     /**
      * 野猪人
      */
-    Quilboar,
+    Quilboar(R.string.module_quilboar),
+
+    /**
+     * 全部
+     */
+    All(R.string.module_all),
 
     /**
      * 佣兵

@@ -55,15 +55,13 @@ class TestActivity : AppCompatActivity() {
 //
 //        }
         binding.next.setOnClickListener {
-            lifecycleScope.launch {
 //                val target = mutableListOf<String>()
-                repeat(100) {
-                    val line = lineList.removeFirstOrNull()
-                    if (line != null) {
+            repeat(1000) {
+                val line = lineList.removeFirstOrNull()
+                if (line != null) {
 //                        target.add(line)
-                        writer?.appendLine(line)
+                    writer?.appendLine(line)
 //                    powerParser.parse(line)
-                    }
                 }
             }
 

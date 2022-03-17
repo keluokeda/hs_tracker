@@ -47,7 +47,7 @@ class PowerFileObserver(
 //                oldLogSize += if (text.isEmpty()) 0 else text.map { it.length }
 //                    .reduce { acc, i -> acc + i }
 
-                "本次读取花费时间 = ${System.currentTimeMillis() - start} ，处理的数据 = $lines".log()
+//                "本次读取花费时间 = ${System.currentTimeMillis() - start} ，处理的数据 = $lines".log()
 
                 emit(lines)
 

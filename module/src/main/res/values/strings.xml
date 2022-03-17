@@ -64,4 +64,30 @@
     <string name="module_hint_write_config">In order to read the log, we will write the contents to the log.config file in the Hearthstone directory</string>
     <string name="module_write_config_failed">Write Config Failed</string>
     <string name="module_rewrite_config_file">Rewrite Config File</string>
+    <string name="module_self">Self</string>
+    <string name="module_opponent">Opponent</string>
+    <string name="module_race">Race</string>
+    <string name="module_minion">Minion</string>
+    <string name="module_spell">Spell</string>
+    <string name="module_weapon">Weapon</string>
+    <string name="module_hero">Hero</string>
+    <string name="module_mechanics">Mechanics</string>
+    <string name="module_pirate">Pirate</string>
+    <string name="module_mechanical">Mechanical</string>
+    <string name="module_dragon">Dragon</string>
+    <string name="module_beast">Beast</string>
+    <string name="module_murloc">Murloc</string>
+    <string name="module_demon">Demon</string>
+    <string name="module_totem">Totem</string>
+    <string name="module_elemental">Elemental</string>
+    <string name="module_quilboar">Quilboar</string>
+    <string name="module_all">All</string>
+    <string name="module_arcane">Arcane</string>
+    <string name="module_frost">Frost</string>
+    <string name="module_fire">Fire</string>
+    <string name="module_nature">Nature</string>
+    <string name="module_shadow">Shadow</string>
+    <string name="module_holy">Holy</string>
+    <string name="module_Fel">Fel</string>
+
 </resources>

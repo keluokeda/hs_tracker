@@ -64,5 +64,30 @@
     <string name="module_hint_write_config">为了读取日志，我们将把以下内容写入到炉石目录的log.config文件中</string>
     <string name="module_write_config_failed">写入配置失败</string>
     <string name="module_rewrite_config_file">重写配置文件</string>
+    <string name="module_self">自己</string>
+    <string name="module_opponent">对手</string>
+    <string name="module_race">种族</string>
+    <string name="module_minion">随从</string>
+    <string name="module_spell">法术</string>
+    <string name="module_weapon">武器</string>
+    <string name="module_hero">英雄</string>
+    <string name="module_mechanics">类型</string>
+    <string name="module_pirate">海盗</string>
+    <string name="module_mechanical">机械</string>
+    <string name="module_dragon">龙</string>
+    <string name="module_beast">野兽</string>
+    <string name="module_murloc">鱼人</string>
+    <string name="module_demon">恶魔</string>
+    <string name="module_totem">图腾</string>
+    <string name="module_elemental">元素</string>
+    <string name="module_quilboar">野猪人</string>
+    <string name="module_all">全部</string>
+    <string name="module_arcane">奥术</string>
+    <string name="module_frost">冰霜</string>
+    <string name="module_fire">火焰</string>
+    <string name="module_nature">自然</string>
+    <string name="module_shadow">暗影</string>
+    <string name="module_holy">神圣</string>
+    <string name="module_Fel">邪能</string>
 
 </resources>

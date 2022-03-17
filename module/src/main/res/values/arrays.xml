@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="module_sorted">
+        <item>费用升序</item>
+        <item>费用降序</item>
+        <item>时间正序</item>
+        <item>时间倒序</item>
+    </string-array>
+</resources>

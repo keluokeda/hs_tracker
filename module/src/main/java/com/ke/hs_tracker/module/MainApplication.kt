@@ -7,10 +7,17 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.documentfile.provider.DocumentFile
+import com.bumptech.glide.Glide
 import com.ke.hs_tracker.module.data.PreferenceStorage
+import com.ke.hs_tracker.module.databinding.ModuleDialogCardPreviewBinding
+import com.ke.hs_tracker.module.databinding.ModuleItemCardBinding
+import com.ke.hs_tracker.module.entity.Card
 import com.ke.hs_tracker.module.parser.PowerParserImpl
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
@@ -172,3 +179,42 @@ fun Context.findHSDataFilesDir(
 
 }
 
+fun ModuleItemCardBinding.bindCard(card: Card) {
+    name.text = card.name
+    cost.text = card.cost.toString()
+
+    card.rarity?.apply {
+        this@bindCard.name.setTextColor(
+            ResourcesCompat.getColor(
+                root.context.resources,
+                colorRes,
+                null
+            )
+        )
+
+    }
+
+    Glide.with(imageTile)
+        .load("https://art.hearthstonejson.com/v1/tiles/${card.id}.png")
+        .into(imageTile)
+}
+
+
+fun showCardImageDialog(context: Context, cardId: String) {
+    val binding = ModuleDialogCardPreviewBinding.inflate(LayoutInflater.from(context))
+    AlertDialog.Builder(context)
+        .show().apply {
+            window?.run {
+                setContentView(binding.root)
+                binding.root.setOnClickListener {
+                    dismiss()
+                }
+                //去掉对话框的白色背景
+                setBackgroundDrawableResource(android.R.color.transparent)
+            }
+        }
+    Glide.with(binding.image)
+        .load("https://art.hearthstonejson.com/v1/render/latest/zhCN/512x/${cardId}.png")
+        .placeholder(R.mipmap.ic_launcher)
+        .into(binding.image)
+}

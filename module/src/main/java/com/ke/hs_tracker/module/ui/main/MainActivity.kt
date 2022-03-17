@@ -10,7 +10,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivityMainBinding
-import com.ke.hs_tracker.module.ui.filter.FilterActivity
 import com.ke.hs_tracker.module.ui.settings.SettingsActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,13 +71,14 @@ class MainActivity : AppCompatActivity() {
         val titleList = listOf(
             R.string.module_deck,
             R.string.module_graveyard,
-            R.string.module_opponent_graveyard
+//            R.string.module_opponent_graveyard
         )
 
         val fragmentList = listOf<Fragment>(
             DeckCardListFragment(),
-            UserGraveyardFragment(),
-            OpponentGraveyardFragment()
+            GraveyardFragment()
+//            UserGraveyardFragment(),
+//            OpponentGraveyardFragment()
         )
 
         val adapter = object : FragmentStateAdapter(this) {
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 
         launchAndRepeatWithViewLifecycle {
             mainViewModel.title.collect {
-                title = it
+                binding.toolbar.title = it
             }
         }
 
@@ -152,4 +152,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
 }
+
+internal enum class SortBy {
+    Cost,
+    CostReverse,
+    Time,
+    TimeReverse
+}
+

@@ -5,11 +5,11 @@ import com.ke.hs_tracker.module.entity.CardBean
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 
-@AndroidEntryPoint
-class UserGraveyardFragment : CardListFragment() {
-
-    private val mainViewModel: MainViewModel by activityViewModels()
-
-    override val cardList: StateFlow<List<CardBean>>
-        get() = mainViewModel.userGraveyardCardList
-}
+//@AndroidEntryPoint
+//class UserGraveyardFragment : CardListFragment() {
+//
+//    private val mainViewModel: MainViewModel by activityViewModels()
+//
+//    override val cardList: StateFlow<List<CardBean>>
+//        get() = mainViewModel.userGraveyardCardList
+//}

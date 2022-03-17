@@ -1,11 +1,14 @@
 package com.ke.hs_tracker.module.entity
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "card")
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class Card(
     /**
      * 画家
@@ -64,5 +67,5 @@ data class Card(
      * 随从生命值
      */
     val health: Int = 0,
-)
+) : Parcelable
 

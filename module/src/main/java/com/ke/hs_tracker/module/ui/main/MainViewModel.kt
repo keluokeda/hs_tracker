@@ -53,17 +53,70 @@ class MainViewModel @Inject constructor(
         get() = _deckLeftCardList
 
 
-    //用户卡牌墓地
-    private val _userGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
+    private val _graveyardCardList = MutableStateFlow<List<GraveyardCard>>(emptyList())
 
-    val userGraveyardCardList: StateFlow<List<CardBean>>
-        get() = _userGraveyardCardList
+    val graveyardCardList: StateFlow<List<GraveyardCard>>
+        get() = _graveyardCardList
+
+    private val userGraveyardCardList = mutableListOf<GraveyardCard>()
+
+    private val opponentGraveyardCardList = mutableListOf<GraveyardCard>()
+
+
+    private val _showUserGraveyardCardList = MutableStateFlow(true)
+
+    /**
+     * 是否显示用户墓地
+     */
+    internal val showUserGraveyardCardList: StateFlow<Boolean>
+        get() = _showUserGraveyardCardList
+
+
+    internal fun toggleShowUserGraveyard(showUser: Boolean) {
+        _showUserGraveyardCardList.value = showUser
+//        _graveyardCardList.value =
+//            if (showUser) userGraveyardCardList else opponentGraveyardCardList
+        updateGraveyardCardList()
+    }
+
+
+    private val _sortBy = MutableStateFlow(SortBy.Cost)
+
+//    internal val sortBy: StateFlow<SortBy>
+//        get() = _sortBy
+
+    /**
+     * 设置排序方式
+     */
+    internal fun setSort(sortBy: SortBy) {
+        _sortBy.value = sortBy
+        updateGraveyardCardList()
+    }
+
+    private fun updateGraveyardCardList() {
+        val source =
+            if (_showUserGraveyardCardList.value) userGraveyardCardList else opponentGraveyardCardList
+
+        val result = when (_sortBy.value) {
+            SortBy.Cost -> source.sortedBy { it.card.cost }
+            SortBy.CostReverse -> source.sortedByDescending { it.card.cost }
+            SortBy.Time -> source.sortedBy { it.time }
+            SortBy.TimeReverse -> source.sortedByDescending { it.time }
+        }
+        _graveyardCardList.value = result
+    }
+
+    //用户卡牌墓地
+//    private val _userGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
+//
+//    val userGraveyardCardList: StateFlow<List<CardBean>>
+//        get() = _userGraveyardCardList
 
     //对手卡牌墓地
-    private val _opponentGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
-
-    val opponentGraveyardCardList: StateFlow<List<CardBean>>
-        get() = _opponentGraveyardCardList
+//    private val _opponentGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
+//
+//    val opponentGraveyardCardList: StateFlow<List<CardBean>>
+//        get() = _opponentGraveyardCardList
 
     private val powerFileObserver: PowerFileObserver by lazy {
         PowerFileObserver {
@@ -126,6 +179,7 @@ class MainViewModel @Inject constructor(
 
     private fun handlePowerTag(tag: PowerTag) {
 
+        tag.toString().log()
 
         when (tag) {
             is PowerTag.GameState.BuildNumber -> {
@@ -173,6 +227,7 @@ class MainViewModel @Inject constructor(
 
 
     private fun handleTagChange(tagChange: PowerTag.PowerTaskList.TagChange) {
+
         if (tagChange.entity.player == user.id && tagChange.entity.zone == Zone.Hand && tagChange.tag == "ZONE" && tagChange.value == "DECK") {
             //TAG_CHANGE Entity=[entityName=冷风 id=15 zone=HAND zonePos=3 cardId=AV_266 player=1] tag=ZONE value=DECK
             insertCardToDeck(tagChange.entity.cardId!!)
@@ -191,12 +246,18 @@ class MainViewModel @Inject constructor(
 
 
     private fun onGameOver() {
-        clearPowerFile()
+        viewModelScope.launch {
+            delay(1000)
+            clearPowerFile()
+        }
         _deckLeftCardList.value = deckCardList
         powerFileObserver.reset()
         deckFileObserver.reset()
-        _userGraveyardCardList.value = emptyList()
-        _opponentGraveyardCardList.value = emptyList()
+//        _userGraveyardCardList.value = emptyList()
+//        _opponentGraveyardCardList.value = emptyList()
+        userGraveyardCardList.clear()
+        opponentGraveyardCardList.clear()
+        _graveyardCardList.value = emptyList()
     }
 
 
@@ -223,6 +284,15 @@ class MainViewModel @Inject constructor(
             //    tag=SPAWN_TIME_COUNT value=1
             //    tag=SPELL_SCHOOL value=3
             removeCardFromDeck(showEntity.cardId)
+        } else if (showEntity.entity.player == user.id && showEntity.entity.zone == Zone.Deck && showEntity.payloads["ZONE"].equals(
+                "GRAVEYARD",
+                true
+            )
+        ) {
+            //爆牌
+            // ShowEntity(entity=Entity(entityName=UNKNOWN ENTITY, gameCardType=Invalid, id=54, zone=Deck, zonePosition=0, cardId=null, player=2), cardId=OG_176, payloads={CONTROLLER=2, CARDTYPE=SPELL, TAG_LAST_KNOWN_COST_IN_HAND=3, COST=3, ZONE=GRAVEYARD, ENTITY_ID=54, RARITY=COMMON, 478=2, 1037=2, 1043=1, 1068=0, SPAWN_TIME_COUNT=1, SPELL_SCHOOL=6})
+            removeCardFromDeck(showEntity.cardId)
+
         }
     }
 
@@ -246,25 +316,44 @@ class MainViewModel @Inject constructor(
             "发现了一个没有id的卡牌插入到墓地 $entity".log()
             return
         }
-        val cardEntity = findCardById(cardId)
+        val card = findCardById(cardId)
 
-        "插入一张牌到墓地 $cardEntity $entity".log()
+        if (card.type == CardType.Enchantment) {
+//            "衍生牌 $card 不能放到墓地去".log()
+            return
+        }
+
+//        "插入一张牌到墓地 $card $entity".log()
 
         //TAG_CHANGE Entity=[entityName=破霰元素 id=62 zone=PLAY zonePos=1 cardId=AV_260 player=2] tag=ZONE value=GRAVEYARD
-        if (entity.player == user.id) {
-            viewModelScope.launch {
-                updateCardList(
-                    cardEntity, _userGraveyardCardList, true
-                )
-            }
+        val isUser = entity.player == user.id
+        if (isUser) {
+//            viewModelScope.launch {
+//                updateCardList(
+//                    cardEntity, _userGraveyardCardList, true
+//                )
+//            }
+            userGraveyardCardList.add(GraveyardCard(card))
 
+//            _graveyardCardList.value = userGraveyardCardList
         } else {
-            viewModelScope.launch {
-                updateCardList(
-                    cardEntity, _opponentGraveyardCardList, true
-                )
-            }
+//            viewModelScope.launch {
+//                updateCardList(
+//                    cardEntity, _opponentGraveyardCardList, true
+//                )
+//            }
+            opponentGraveyardCardList.add(GraveyardCard(card))
+//            _graveyardCardList.value = opponentGraveyardCardList
 
+        }
+
+        if (isUser && _showUserGraveyardCardList.value) {
+            //是当前用户的卡插入到墓地 并且显示是当前用户的墓地
+//            _graveyardCardList.value = userGraveyardCardList
+            updateGraveyardCardList()
+        } else if (!isUser && _showUserGraveyardCardList.value) {
+//            _graveyardCardList.value = opponentGraveyardCardList
+            updateGraveyardCardList()
         }
     }
 
@@ -272,7 +361,7 @@ class MainViewModel @Inject constructor(
 
         val card = findCardById(cardId)
 
-        "牌库中的一张卡牌数量发生了变化 $card ，是否是插入 $insert".log()
+//        "牌库中的一张卡牌数量发生了变化 $card ，是否是插入 $insert".log()
 
 //        updateCardList(card, _deckLeftCardList, insert)
         viewModelScope.launch {

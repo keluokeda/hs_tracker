@@ -6,7 +6,7 @@ import com.ke.hs_tracker.module.R
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
 
-enum class Rarity(@StringRes val title: Int, @ColorRes val colorRes: Int) {
+enum class Rarity(@StringRes val titleRes: Int, @ColorRes val colorRes: Int) {
 
     /**
      * 免费

@@ -20,7 +20,6 @@
 
     <style name="module_Theme.Hs_tracker.Main" parent="module_Theme.Hs_tracker">
 
-        <item name="android:windowBackground">#66000000</item>
     </style>
 
     <style name="module_Theme.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
