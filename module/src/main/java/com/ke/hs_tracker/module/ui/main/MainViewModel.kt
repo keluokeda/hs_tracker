@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ke.hs_tracker.module.db.Game
+import com.ke.hs_tracker.module.db.GameDao
 
 import com.ke.hs_tracker.module.di.IoDispatcher
 import com.ke.hs_tracker.module.domain.GetAllCardUseCase
@@ -30,10 +32,11 @@ class MainViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val parseDeckCodeUseCase: ParseDeckCodeUseCase,
     private val getAllCardUseCase: GetAllCardUseCase,
-    private val getLogDirUseCase: GetRealLogDirUseCase
+    private val getLogDirUseCase: GetRealLogDirUseCase,
+    private val gameDao: GameDao
 ) : ViewModel() {
-    private lateinit var user: PowerTag.GameState.PlayerMapping
-    private lateinit var opponent: PowerTag.GameState.PlayerMapping
+    private var user: PowerTag.GameState.PlayerMapping? = null
+    private var opponent: PowerTag.GameState.PlayerMapping? = null
 
 //    private var logsDir: DocumentFile? = null
 
@@ -106,20 +109,9 @@ class MainViewModel @Inject constructor(
         _graveyardCardList.value = result
     }
 
-    //用户卡牌墓地
-//    private val _userGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
-//
-//    val userGraveyardCardList: StateFlow<List<CardBean>>
-//        get() = _userGraveyardCardList
-
-    //对手卡牌墓地
-//    private val _opponentGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
-//
-//    val opponentGraveyardCardList: StateFlow<List<CardBean>>
-//        get() = _opponentGraveyardCardList
 
     private val powerFileObserver: PowerFileObserver by lazy {
-        PowerFileObserver {
+        PowerFileObserver(500) {
             getFileStream("Power.log")
         }
 
@@ -129,6 +121,9 @@ class MainViewModel @Inject constructor(
             getFileStream("Decks.log")
         }
     }
+
+    private var currentDeck: CurrentDeck? = null
+    private var game: Game = Game()
 
 
     private val powerParser = PowerParserImpl()
@@ -149,6 +144,7 @@ class MainViewModel @Inject constructor(
 
 
 
+
         powerParser.powerTagListener = {
             handlePowerTag(it)
         }
@@ -164,6 +160,7 @@ class MainViewModel @Inject constructor(
                     _deckLeftCardList.value = it.second
                     _title.value = it.first.name
                     deckCardList = it.second
+                    currentDeck = it.first
                 }
         }
         viewModelScope.launch {
@@ -184,14 +181,26 @@ class MainViewModel @Inject constructor(
         when (tag) {
             is PowerTag.GameState.BuildNumber -> {
 
+                game = Game(buildNumber = tag.number)
+                game.userDeckName = currentDeck?.name ?: ""
+                game.userDeckCode = currentDeck?.code ?: ""
+
             }
             is PowerTag.GameState.FormatType -> {
-
+                game.formatType = tag.type
             }
             is PowerTag.GameState.GameType -> {
-
+                game.gameType = tag.type
             }
             is PowerTag.GameState.PlayerMapping -> {
+
+                if (tag.isUser) {
+                    game.player1Name = tag.name
+                    game.isUserFirst = tag.first
+                } else {
+                    game.player2Name = tag.name
+                }
+
                 if (tag.isUser) {
                     user = tag
                 } else {
@@ -200,7 +209,7 @@ class MainViewModel @Inject constructor(
 
             }
             is PowerTag.GameState.ScenarioID -> {
-
+                game.scenarioID = tag.id.toInt()
             }
             is PowerTag.PowerTaskList.Block -> {
                 tag.list.forEach {
@@ -215,7 +224,9 @@ class MainViewModel @Inject constructor(
             }
             is PowerTag.PowerTaskList.FullEntity -> {
 //                handleFullEntity(tag)
+                handleFullEntity(tag)
             }
+
             is PowerTag.PowerTaskList.ShowEntity -> {
                 handleShowEntity(tag)
             }
@@ -226,9 +237,22 @@ class MainViewModel @Inject constructor(
     }
 
 
+    private fun handleFullEntity(fullEntity: PowerTag.PowerTaskList.FullEntity) {
+        fullEntity.isUpdateHero()?.apply {
+            val cardClass = allCard.find {
+                it.id == second
+            }?.cardClass ?: return
+            if (first == user?.id) {
+                game.userHero = cardClass
+            } else if (first == opponent?.id) {
+                game.opponentHero = cardClass
+            }
+        }
+    }
+
     private fun handleTagChange(tagChange: PowerTag.PowerTaskList.TagChange) {
 
-        if (tagChange.entity.player == user.id && tagChange.entity.zone == Zone.Hand && tagChange.tag == "ZONE" && tagChange.value == "DECK") {
+        if (tagChange.entity.player == user?.id && tagChange.entity.zone == Zone.Hand && tagChange.tag == "ZONE" && tagChange.value == "DECK") {
             //TAG_CHANGE Entity=[entityName=冷风 id=15 zone=HAND zonePos=3 cardId=AV_266 player=1] tag=ZONE value=DECK
             insertCardToDeck(tagChange.entity.cardId!!)
         } else if (tagChange.tag == "ZONE" && tagChange.value == "GRAVEYARD" && tagChange.entity.zone == Zone.Play) {
@@ -242,11 +266,21 @@ class MainViewModel @Inject constructor(
             "游戏结束了".log()
             onGameOver()
         }
+
+        tagChange.isPlayerWonOrLost?.apply {
+            if (first == game.userName) {
+                game.isUserWin = second
+            } else {
+                game.opponentName = first
+            }
+        }
     }
 
 
     private fun onGameOver() {
         viewModelScope.launch {
+            //保存游戏
+            gameDao.insert(game)
             delay(1000)
             clearPowerFile()
         }
@@ -262,7 +296,7 @@ class MainViewModel @Inject constructor(
 
 
     private fun handleShowEntity(showEntity: PowerTag.PowerTaskList.ShowEntity) {
-        if (showEntity.entity.player == user.id && showEntity.entity.zone == Zone.Deck && showEntity.payloads["ZONE"].equals(
+        if (showEntity.entity.player == user?.id && showEntity.entity.zone == Zone.Deck && showEntity.payloads["ZONE"].equals(
                 "hand",
                 true
             )
@@ -284,7 +318,7 @@ class MainViewModel @Inject constructor(
             //    tag=SPAWN_TIME_COUNT value=1
             //    tag=SPELL_SCHOOL value=3
             removeCardFromDeck(showEntity.cardId)
-        } else if (showEntity.entity.player == user.id && showEntity.entity.zone == Zone.Deck && showEntity.payloads["ZONE"].equals(
+        } else if (showEntity.entity.player == user?.id && showEntity.entity.zone == Zone.Deck && showEntity.payloads["ZONE"].equals(
                 "GRAVEYARD",
                 true
             )
@@ -326,7 +360,7 @@ class MainViewModel @Inject constructor(
 //        "插入一张牌到墓地 $card $entity".log()
 
         //TAG_CHANGE Entity=[entityName=破霰元素 id=62 zone=PLAY zonePos=1 cardId=AV_260 player=2] tag=ZONE value=GRAVEYARD
-        val isUser = entity.player == user.id
+        val isUser = entity.player == user?.id
         if (isUser) {
 //            viewModelScope.launch {
 //                updateCardList(

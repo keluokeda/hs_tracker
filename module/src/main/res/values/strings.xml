@@ -89,5 +89,6 @@
     <string name="module_shadow">Shadow</string>
     <string name="module_holy">Holy</string>
     <string name="module_Fel">Fel</string>
+    <string name="module_version_code_helper_text">No input means to get the latest</string>
 
 </resources>

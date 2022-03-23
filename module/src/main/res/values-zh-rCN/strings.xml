@@ -89,5 +89,6 @@
     <string name="module_shadow">暗影</string>
     <string name="module_holy">神圣</string>
     <string name="module_Fel">邪能</string>
+    <string name="module_version_code_helper_text">不输入表示获取最新的</string>
 
 </resources>

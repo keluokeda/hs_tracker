@@ -40,7 +40,9 @@ class SyncCardDataViewModel @Inject constructor(
         viewModelScope.launch {
             showLoadingDialog("同步中")
 
-            when (val result = getCardListUseCase(versionCode to region)) {
+            val code = versionCode.ifEmpty { "latest" }
+
+            when (val result = getCardListUseCase(code to region)) {
                 is Result.Success -> {
                     clearCardTableUseCase(Unit)
                     insertCardListToDatabaseUseCase(result.data)

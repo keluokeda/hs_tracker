@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import java.io.InputStream
 
 /**
- * deck文件观察者
+ * power文件观察者
  */
 class PowerFileObserver(
     private val interval: Long = 2000,

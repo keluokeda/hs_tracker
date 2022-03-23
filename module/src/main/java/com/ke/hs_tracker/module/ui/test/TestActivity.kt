@@ -6,9 +6,11 @@ import androidx.lifecycle.lifecycleScope
 
 import com.ke.hs_tracker.module.databinding.ModuleActivityTestBinding
 import com.ke.hs_tracker.module.findHSDataFilesDir
+import com.ke.hs_tracker.module.log
 import com.ke.hs_tracker.module.parser.PowerParser
 import com.ke.hs_tracker.module.parser.PowerParserImpl
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.OutputStreamWriter
 
 class TestActivity : AppCompatActivity() {
@@ -28,8 +30,13 @@ class TestActivity : AppCompatActivity() {
             assets.open("Power.log").reader().readLines().toMutableList()
         )
 
+        val logDocument = findHSDataFilesDir("Logs")
 
-        val document = findHSDataFilesDir("Logs")?.findFile("Power.log")
+
+        var document = logDocument?.findFile("Power.log")
+        if (document == null) {
+            document = logDocument?.createFile("plain/text", "Power.log")
+        }
 
         var writer: OutputStreamWriter? = null
         document?.apply {
@@ -43,20 +50,27 @@ class TestActivity : AppCompatActivity() {
                 contentResolver.openOutputStream(uri, "wt")?.writer()?.write("")
 
             }
-            lineList.clear()
-            lineList.addAll(
-                assets.open("Power.log").reader().readLines().toMutableList()
-            )
+
+            assets.open("Power.log").reader().apply {
+                lineList.clear()
+
+                lineList.addAll(readLines().toMutableList())
+                close()
+            }
+
 
         }
+
 
 //        powerParser.powerTagListener = {
 //
 //
 //        }
+        var counter = 0
         binding.next.setOnClickListener {
 //                val target = mutableListOf<String>()
-            repeat(1000) {
+            repeat(1024) {
+                counter++
                 val line = lineList.removeFirstOrNull()
                 if (line != null) {
 //                        target.add(line)
@@ -64,6 +78,7 @@ class TestActivity : AppCompatActivity() {
 //                    powerParser.parse(line)
                 }
             }
+            writer?.flush()
 
 
         }

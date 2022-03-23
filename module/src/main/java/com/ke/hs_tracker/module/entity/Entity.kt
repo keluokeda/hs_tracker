@@ -24,6 +24,11 @@ data class Entity(
             else -> EntityType.Clear
         }
 
+    val isGameEntity: Boolean
+        get() = entityName == "GameEntity"
+
+    val isUserEntity: Boolean
+        get() = entityName.contains("#")
 
     companion object {
         internal fun createFromContent(content: String): Entity? {

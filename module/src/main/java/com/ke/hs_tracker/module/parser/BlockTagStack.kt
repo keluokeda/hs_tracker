@@ -424,7 +424,8 @@ internal class BlockTagStackImpl : BlockTagStack {
         source: MutableList<NestedTag>,
     ): PowerTag.PowerTaskList.Block {
         //有可能出现多级嵌套
-        val first = source.removeFirst() as? NestedTag.Block
+        val header = source.removeFirst()
+        val first = header as? NestedTag.Block
 
         if (first == null) {
 

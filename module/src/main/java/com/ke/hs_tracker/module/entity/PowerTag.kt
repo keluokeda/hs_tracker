@@ -65,6 +65,20 @@ sealed interface PowerTag {
                     "COMPLETE",
                     true
                 )
+
+            /**
+             * 是否是玩家胜利或失败
+             */
+            val isPlayerWonOrLost: Pair<String, Boolean>?
+                get() {
+                    return if (tag == "PLAYSTATE" && value == "WON") {
+                        entity.entityName to true
+                    } else if (tag == "PLAYSTATE" && value == "LOST") {
+                        entity.entityName to false
+                    } else {
+                        null
+                    }
+                }
         }
 
 
@@ -74,6 +88,19 @@ sealed interface PowerTag {
         ) : PowerTaskList {
             fun append(value: Pair<String, String>) {
                 payloads[value.first] = value.second
+            }
+
+            /**
+             * 是否是更新英雄置于战场
+             */
+            fun isUpdateHero(): Pair<Int, String?>? {
+                if (entity.zone == Zone.Play && payloads.count {
+                        it.key == "CARDTYPE" && it.value == "HERO"
+                    } == 1) {
+                    return entity.player to entity.cardId
+                }
+
+                return null
             }
         }
 
@@ -92,7 +119,35 @@ sealed interface PowerTag {
             val entity: Entity,
             val target: Entity?,
             val list: List<PowerTag>
-        ) : PowerTaskList
+        ) : PowerTaskList {
+
+            /**
+             * 是否是第一回合
+             */
+            fun ifFirstTurn(): Boolean {
+                return type == BlockType.Trigger && entity.isGameEntity && list.mapNotNull {
+                    it as? TagChange
+                }.any {
+                    it.tag == "FIRST_PLAYER" && it.value == "1"
+                }
+            }
+
+            /**
+             * 是否是玩家回合的开始
+             */
+            fun isTurnStart(): String? {
+                if (type == BlockType.Trigger && entity.isUserEntity) {
+                    if (list.size == 1) {
+                        val first = list.first()
+                        if (first is TagChange && first.entity.isGameEntity && first.tag == "NEXT_STEP" && first.value == "MAIN_START") {
+                            return entity.entityName
+                        }
+                    }
+                }
+
+                return null
+            }
+        }
     }
 
     sealed interface GameState : PowerTag {

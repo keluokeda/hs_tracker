@@ -7,6 +7,7 @@ import com.ke.hs_tracker.module.data.PreferenceStorage
 import com.ke.hs_tracker.module.data.PreferenceStorageImpl
 import com.ke.hs_tracker.module.db.CardDao
 import com.ke.hs_tracker.module.db.Database
+import com.ke.hs_tracker.module.db.GameDao
 import com.ke.hs_tracker.module.entity.*
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -76,6 +77,9 @@ class Module {
     fun provideCardDao(database: Database): CardDao {
         return database.cardDao()
     }
+
+    @Provides
+    fun provideGameDao(database: Database): GameDao = database.gameDao()
 
     @Provides
     @Singleton

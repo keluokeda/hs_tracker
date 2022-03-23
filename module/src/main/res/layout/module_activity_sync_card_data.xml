@@ -37,6 +37,7 @@
         android:layout_margin="8dp"
         android:hint="@string/module_version_code"
         app:endIconMode="clear_text"
+        app:helperText="@string/module_version_code_helper_text"
         app:layout_constraintTop_toBottomOf="@id/link">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -44,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:text="@string/module_default_version" />
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

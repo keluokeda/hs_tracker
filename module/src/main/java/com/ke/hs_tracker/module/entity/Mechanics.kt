@@ -65,6 +65,11 @@ enum class Mechanics {
      */
     Deathrattle,
 
+    /**
+     * 秘密选择
+     */
+    Counter,
+
     InvisibleDeathrattle,
 
     /**
