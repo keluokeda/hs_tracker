@@ -39,7 +39,7 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        CrashReport.initCrashReport(applicationContext, "abb84be20b", BuildConfig.DEBUG)
+        CrashReport.initCrashReport(applicationContext, "abb84be20b", false)
         AppCompatDelegate.setDefaultNightMode(preferenceStorage.theme)
         Logger.addLogAdapter(
             AndroidLogAdapter(
@@ -48,6 +48,7 @@ class MainApplication : Application() {
                     .build()
             )
         )
+        Build.BRAND.log()
     }
 }
 
@@ -117,6 +118,8 @@ val DATA_DIR_URI =
 
 const val HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone"
 
+const val HUAWEI_HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone.cn.huawei"
+
 /**
  * 写入log.config文件
  */
@@ -174,7 +177,11 @@ fun Context.findHSDataFilesDir(
         }
     }
 
-    return null
+    if (applicationId == HUAWEI_HS_APPLICATION_ID) {
+        return null
+    }
+
+    return findHSDataFilesDir(fileName, HUAWEI_HS_APPLICATION_ID)
 
 
 }

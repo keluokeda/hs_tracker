@@ -2,15 +2,8 @@ package com.ke.hs_tracker.module.ui.test
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-
 import com.ke.hs_tracker.module.databinding.ModuleActivityTestBinding
 import com.ke.hs_tracker.module.findHSDataFilesDir
-import com.ke.hs_tracker.module.log
-import com.ke.hs_tracker.module.parser.PowerParser
-import com.ke.hs_tracker.module.parser.PowerParserImpl
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.io.OutputStreamWriter
 
 class TestActivity : AppCompatActivity() {

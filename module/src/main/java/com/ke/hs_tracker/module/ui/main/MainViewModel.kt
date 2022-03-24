@@ -111,7 +111,7 @@ class MainViewModel @Inject constructor(
 
 
     private val powerFileObserver: PowerFileObserver by lazy {
-        PowerFileObserver(500) {
+        PowerFileObserver(1500) {
             getFileStream("Power.log")
         }
 
@@ -195,17 +195,16 @@ class MainViewModel @Inject constructor(
             is PowerTag.GameState.PlayerMapping -> {
 
                 if (tag.isUser) {
-                    game.player1Name = tag.name
-                    game.isUserFirst = tag.first
+                    game.userName = tag.name
+                    user = tag
+
+//                    game.isUserFirst = tag.first
                 } else {
-                    game.player2Name = tag.name
+                    game.opponentName = tag.name
+                    opponent = tag
+
                 }
 
-                if (tag.isUser) {
-                    user = tag
-                } else {
-                    opponent = tag
-                }
 
             }
             is PowerTag.GameState.ScenarioID -> {
@@ -221,6 +220,7 @@ class MainViewModel @Inject constructor(
                 //初始化卡牌
                 "游戏开始了".log()
                 _deckLeftCardList.value = deckCardList
+                game.startTime = System.currentTimeMillis()
             }
             is PowerTag.PowerTaskList.FullEntity -> {
 //                handleFullEntity(tag)
@@ -267,26 +267,33 @@ class MainViewModel @Inject constructor(
             onGameOver()
         }
 
-        tagChange.isPlayerWonOrLost?.apply {
-            if (first == game.userName) {
-                game.isUserWin = second
+        val pair = tagChange.isPlayerWonOrLost
+        if (pair != null) {
+            "有玩家胜利或失败了 $pair $game".log()
+            if (pair.first == game.userName) {
+                game.isUserWin = pair.second
             } else {
-                game.opponentName = first
+                game.opponentName = pair.first
             }
         }
+
+        if (tagChange.tag == "FIRST_PLAYER" && tagChange.value == "1") {
+            game.isUserFirst = tagChange.entity.entityName == game.userName
+        }
+
     }
 
 
     private fun onGameOver() {
         viewModelScope.launch {
             //保存游戏
+            game.endTime = System.currentTimeMillis()
             gameDao.insert(game)
             delay(1000)
             clearPowerFile()
         }
         _deckLeftCardList.value = deckCardList
-        powerFileObserver.reset()
-        deckFileObserver.reset()
+
 //        _userGraveyardCardList.value = emptyList()
 //        _opponentGraveyardCardList.value = emptyList()
         userGraveyardCardList.clear()
@@ -428,9 +435,9 @@ class MainViewModel @Inject constructor(
         allCard.find { it.id == cardId } ?: throw RuntimeException("id为 $cardId 没有这张牌")
 
 
-    private fun clearPowerFile() {
+    private suspend fun clearPowerFile() {
 
-        viewModelScope.launch {
+        withContext(dispatcher) {
             val documentFile = getLogsDir()?.findFile(powerFileName)
             documentFile?.apply {
                 context.contentResolver.openOutputStream(uri, "wt")?.use {
@@ -439,6 +446,9 @@ class MainViewModel @Inject constructor(
                     it.close()
                 }
             }
+
+            powerFileObserver.reset()
+            deckFileObserver.reset()
         }
 
 
