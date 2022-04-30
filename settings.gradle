@@ -38,3 +38,5 @@ rootProject.name = "hs_tracker"
 include ':app'
 include ':module'
 include ':writer'
+include ':simulator'
+include ':shared'

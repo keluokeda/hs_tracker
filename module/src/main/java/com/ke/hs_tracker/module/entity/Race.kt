@@ -50,6 +50,9 @@ enum class Race(@StringRes val titleRes: Int? = null) {
     Elemental(R.string.module_elemental),
 
 
+    Naga(R.string.module_naga),
+
+
     /**
      * 野猪人
      */

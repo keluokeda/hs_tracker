@@ -14,7 +14,7 @@
         <item name="colorSecondaryVariant">@color/module_teal_200</item>
         <item name="colorOnSecondary">@color/module_black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/module_black</item>
     </style>
 
     <style name="module_Theme.Hs_tracker.Main" parent="module_Theme.Hs_tracker">

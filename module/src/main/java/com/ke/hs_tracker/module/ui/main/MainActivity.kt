@@ -50,23 +50,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
-        binding.toolbar.menu.apply {
-            clear()
-            add(
-                0,
-                0,
-                0,
-                R.string.module_settings
-            ).setIcon(R.drawable.module_baseline_settings_white_24dp)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-
-
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
-        binding.toolbar.setOnMenuItemClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            true
-        }
+
 
         val titleList = listOf(
             R.string.module_deck,
@@ -150,7 +137,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
 
 
 }

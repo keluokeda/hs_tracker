@@ -4,17 +4,21 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ke.hs_tracker.module.entity.CardClass
+import com.ke.hs_tracker.module.entity.FormatType
+import com.ke.hs_tracker.module.entity.GameType
+import java.util.*
 
 @Entity(tableName = "game")
 data class Game(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey(autoGenerate = false)
+    val id: String = UUID.randomUUID().toString(),
+    //并不是唯一标识
     @ColumnInfo(name = "build_number")
     val buildNumber: String = "",
     @ColumnInfo(name = "game_type")
-    var gameType: String = "",
+    var gameType: GameType = GameType.Unknown,
     @ColumnInfo(name = "format_type")
-    var formatType: String = "",
+    var formatType: FormatType = FormatType.Unknown,
     @ColumnInfo(name = "scenario_id")
     var scenarioID: Int = 0,
     @ColumnInfo(name = "user_name")

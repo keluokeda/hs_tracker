@@ -38,25 +38,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/module_divider"
-        app:layout_constraintTop_toBottomOf="@id/test" />
-    <TextView
-        android:id="@+id/test"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:padding="16dp"
-        android:text="@string/module_test"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/app_bar" />
+        android:background="@color/module_divider" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:background="@color/module_divider"
-        app:layout_constraintTop_toBottomOf="@id/test" />
 
     <TextView
         android:id="@+id/language"
@@ -66,9 +49,8 @@
         android:layout_marginTop="1dp"
         android:background="?selectableItemBackground"
         android:padding="16dp"
-        android:visibility="gone"
         android:text="@string/module_language"
-        app:layout_constraintTop_toBottomOf="@id/test" />
+        android:visibility="gone" />
 
 
     <TextView
@@ -79,8 +61,7 @@
         android:layout_marginTop="1dp"
         android:background="?selectableItemBackground"
         android:padding="16dp"
-        android:text="@string/module_sync_card_data"
-        app:layout_constraintTop_toBottomOf="@id/test" />
+        android:text="@string/module_sync_card_data" />
 
     <View
         android:layout_width="match_parent"
@@ -96,8 +77,7 @@
         android:layout_marginTop="1dp"
         android:background="?selectableItemBackground"
         android:padding="16dp"
-        android:text="@string/module_code_parser"
-        app:layout_constraintTop_toBottomOf="@id/test" />
+        android:text="@string/module_code_parser" />
 
     <View
         android:layout_width="match_parent"
@@ -113,14 +93,27 @@
         android:layout_marginTop="1dp"
         android:background="?selectableItemBackground"
         android:padding="16dp"
-        android:text="@string/module_rewrite_config_file"
-        app:layout_constraintTop_toBottomOf="@id/test" />
+        android:text="@string/module_rewrite_config_file" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/module_divider"
-       />
+        app:layout_constraintTop_toBottomOf="@id/sync" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/save_log_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:padding="16dp"
+        android:text="@string/module_save_log_file"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/module_divider" />
 
     <LinearLayout
         android:id="@+id/ll_contact_author"

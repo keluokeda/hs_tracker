@@ -14,36 +14,27 @@
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@drawable/module_image_tile"
-        app:layout_constraintStart_toEndOf="@id/image_cost"
+        app:layout_constraintStart_toEndOf="@id/cost"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="256:49"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/image_cost"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:contentDescription="@null"
-        android:src="@drawable/module_image_bg_cost"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/image_tile"
-        app:layout_constraintBottom_toBottomOf="@id/image_tile"
-         />
+
 
     <TextView
         android:id="@+id/cost"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:padding="4dp"
+        android:background="@color/module_rarity_common"
         android:textColor="@color/module_white"
-        app:layout_constraintTop_toTopOf="@id/image_cost"
-        app:layout_constraintBottom_toBottomOf="@id/image_cost"
-        app:layout_constraintStart_toStartOf="@id/image_cost"
-        app:layout_constraintEnd_toEndOf="@id/image_cost"
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="2" />
 
     <TextView
@@ -62,11 +53,13 @@
 
     <TextView
         android:id="@+id/count"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         tools:text="2"
-        android:gravity="end"
-        android:textColor="@color/module_white"
+        app:layout_constraintDimensionRatio="1:1"
+        android:background="#353535"
+        android:gravity="center"
+        android:textColor="@color/module_druid"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/image_tile"

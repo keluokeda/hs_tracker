@@ -22,6 +22,21 @@
         android:label="@string/module_app_name"
         android:theme="@style/module_Theme.Hs_tracker">
         <activity
+            android:name=".ui.test.LocalFileParserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.zonecards.ZoneCardsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.zoneevents.ZoneEventsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.test.CreateRecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.records.RecordsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.writeconfig.WriteConfigActivity"
             android:exported="false" />
         <activity

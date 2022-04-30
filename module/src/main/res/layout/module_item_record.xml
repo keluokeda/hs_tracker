@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
+
+    <ImageView
+        android:id="@+id/user_hero"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.12"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/module_image_round_warlock" />
+
+    <TextView
+        android:id="@+id/vs"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingHorizontal="16dp"
+        android:text="VS"
+        app:layout_constraintBottom_toBottomOf="@id/user_hero"
+        app:layout_constraintStart_toEndOf="@id/user_hero"
+        app:layout_constraintTop_toTopOf="@id/user_hero" />
+
+    <ImageView
+        android:id="@+id/opponent_hero"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.12"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toEndOf="@id/vs"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/module_image_round_warlock" />
+
+    <TextView
+        android:id="@+id/state"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:textColor="#00ff00"
+        android:textColor="@color/module_game_state"
+        app:layout_constraintBottom_toBottomOf="@id/user_hero"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/user_hero"
+        tools:text="@string/module_win" />
+
+    <TextView
+        android:id="@+id/game_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/state"
+        app:layout_constraintStart_toEndOf="@id/opponent_hero"
+        app:layout_constraintTop_toTopOf="@id/opponent_hero"
+        app:layout_constraintBottom_toTopOf="@id/date"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        tools:text="标准排名"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/opponent_hero"
+        app:layout_constraintEnd_toStartOf="@id/state"
+        app:layout_constraintTop_toBottomOf="@id/game_type"
+        android:gravity="center"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:id="@+id/date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="2022-12-12 09:00:00"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

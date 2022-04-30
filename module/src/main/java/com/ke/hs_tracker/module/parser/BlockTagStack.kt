@@ -145,17 +145,17 @@ internal class BlockTagStackImpl : BlockTagStack {
             if (first is NestedTag.CreateGame) {
                 //create game 接 full entity
                 val createGame = createCreateGameTag()
-                val content = matchResult.groupValues[1]
-                insertFullEntity(content)
+                val pair = matchResult.groupValues[1] to matchResult.groupValues[2]
+                insertFullEntity(pair)
                 return InsertStackResult.Over(createGame, true)
 
             } else if (first is NestedTag.FullEntity) {
                 //连续两个full entity
                 val result = flushFullEntityWhenFirst()
-                insertFullEntity(matchResult.groupValues[1])
+                insertFullEntity(matchResult.groupValues[1] to matchResult.groupValues[2])
                 return InsertStackResult.Over(result, true)
             }
-            insertFullEntity(matchResult.groupValues[1])
+            insertFullEntity(matchResult.groupValues[1] to matchResult.groupValues[2])
             return InsertStackResult.Success
         }
 
@@ -204,7 +204,8 @@ internal class BlockTagStackImpl : BlockTagStack {
 
         return PowerTag.PowerTaskList.FullEntity(
             first.entity,
-            map
+            map,
+            first.cardId
         )
 //        return when {
 //            isInsertCardToDeck(first) -> {
@@ -353,8 +354,9 @@ internal class BlockTagStackImpl : BlockTagStack {
 //    }
 
 
-    private fun insertFullEntity(content: String) {
-        val fullEntity = createFullEntityByContent(content)
+    private fun insertFullEntity(pair: Pair<String, String>) {
+        val fullEntity =
+            createFullEntityByContent(pair.first, pair.second.ifEmpty { null })
         nestedTagList.add(fullEntity)
     }
 
@@ -363,9 +365,9 @@ internal class BlockTagStackImpl : BlockTagStack {
      */
     //[entityName=UNKNOWN ENTITY [cardType=INVALID] id=4 zone=DECK zonePos=0 cardId= player=1]
     //[entityName=加尔鲁什·地狱咆哮 id=64 zone=PLAY zonePos=0 cardId=HERO_01 player=1]
-    private fun createFullEntityByContent(content: String): NestedTag.FullEntity {
+    private fun createFullEntityByContent(content: String, cardId: String?): NestedTag.FullEntity {
         val entity: Entity = Entity.createFromContent(content)!!
-        return NestedTag.FullEntity(entity)
+        return NestedTag.FullEntity(entity, cardId)
     }
 
 
@@ -463,7 +465,13 @@ internal class BlockTagStackImpl : BlockTagStack {
                     if (tempList.isNotEmpty()) {
                         tempList.add(nestedTag)
                     } else {
-                        payloads.add(PowerTag.PowerTaskList.FullEntity(nestedTag.entity))
+                        payloads.add(
+                            PowerTag.PowerTaskList.FullEntity(
+                                nestedTag.entity,
+                                mutableMapOf(),
+                                nestedTag.cardId
+                            )
+                        )
                     }
                 }
 

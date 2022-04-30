@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+ <com.google.android.material.chip.Chip
+     android:id="@+id/user_deck"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     tools:text="玩家牌库 10"/>
+    <com.google.android.material.chip.Chip
+        android:id="@+id/user_hand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="玩家手牌 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/user_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="玩家战场 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/user_graveyard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="玩家墓地 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/user_secret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="玩家奥秘 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/opponent_deck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="对手牌库 10"/>
+    <com.google.android.material.chip.Chip
+        android:id="@+id/opponent_hand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="对手手牌 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/opponent_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="对手战场手牌 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/opponent_graveyard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="对手墓地 10"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/opponent_secret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="对手奥秘 0"/>
+</com.google.android.material.chip.ChipGroup>

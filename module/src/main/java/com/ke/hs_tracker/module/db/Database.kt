@@ -6,12 +6,10 @@ import androidx.room.TypeConverters
 import com.ke.hs_tracker.module.entity.Card
 
 @Database(
-    entities = [Card::class, Game::class],
-    version = 2,
-    exportSchema = false,
-//    autoMigrations = [
-//        AutoMigration(from = 1, to = 2)
-//    ]
+    entities = [Card::class, Game::class, ZonePositionChangedEvent::class],
+    version = 3,
+    exportSchema = true,
+
 )
 @TypeConverters(
     CardClassesConvert::class, MechanicsListConvert::class
@@ -20,4 +18,7 @@ abstract class Database : RoomDatabase() {
     abstract fun cardDao(): CardDao
 
     abstract fun gameDao(): GameDao
+
+
+    abstract fun zonePositionChangedEventDao(): ZonePositionChangedEventDao
 }

@@ -5,13 +5,13 @@ import android.content.Context
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ke.hs_tracker.module.db.Game
-import com.ke.hs_tracker.module.db.GameDao
+import com.ke.hs_tracker.module.db.*
 
 import com.ke.hs_tracker.module.di.IoDispatcher
 import com.ke.hs_tracker.module.domain.GetAllCardUseCase
 import com.ke.hs_tracker.module.domain.GetRealLogDirUseCase
 import com.ke.hs_tracker.module.domain.ParseDeckCodeUseCase
+import com.ke.hs_tracker.module.domain.SaveLogFileUseCase
 import com.ke.hs_tracker.module.entity.*
 import com.ke.hs_tracker.module.log
 import com.ke.hs_tracker.module.parser.DeckFileObserver
@@ -33,7 +33,9 @@ class MainViewModel @Inject constructor(
     private val parseDeckCodeUseCase: ParseDeckCodeUseCase,
     private val getAllCardUseCase: GetAllCardUseCase,
     private val getLogDirUseCase: GetRealLogDirUseCase,
-    private val gameDao: GameDao
+    private val gameDao: GameDao,
+    private val zonePositionChangedEventDao: ZonePositionChangedEventDao,
+    private val saveLogFileUseCase: SaveLogFileUseCase
 ) : ViewModel() {
     private var user: PowerTag.GameState.PlayerMapping? = null
     private var opponent: PowerTag.GameState.PlayerMapping? = null
@@ -133,6 +135,10 @@ class MainViewModel @Inject constructor(
 
     private var deckCardList: List<CardBean> = emptyList()
 
+    private val zoneChangedEventList = mutableListOf<ZonePositionChangedEvent>()
+
+    private val entityIdAndCardIdMap = mutableMapOf<Int, String>()
+
     init {
 
         viewModelScope.launch {
@@ -142,6 +148,11 @@ class MainViewModel @Inject constructor(
         }
 
 
+        viewModelScope.launch {
+            _deckLeftCardList.collect {
+
+            }
+        }
 
 
 
@@ -174,9 +185,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun handlePowerTag(tag: PowerTag) {
 
-        tag.toString().log()
+    private fun handlePowerTag(tag: PowerTag) {
 
         when (tag) {
             is PowerTag.GameState.BuildNumber -> {
@@ -187,10 +197,10 @@ class MainViewModel @Inject constructor(
 
             }
             is PowerTag.GameState.FormatType -> {
-                game.formatType = tag.type
+                game.formatType = tag.type.toFormatType
             }
             is PowerTag.GameState.GameType -> {
-                game.gameType = tag.type
+                game.gameType = tag.type.toGameType
             }
             is PowerTag.GameState.PlayerMapping -> {
 
@@ -215,6 +225,7 @@ class MainViewModel @Inject constructor(
                     handlePowerTag(it)
                 }
 
+
             }
             is PowerTag.PowerTaskList.CreateGame -> {
                 //初始化卡牌
@@ -225,15 +236,122 @@ class MainViewModel @Inject constructor(
             is PowerTag.PowerTaskList.FullEntity -> {
 //                handleFullEntity(tag)
                 handleFullEntity(tag)
+                //FULL_ENTITY - Updating [entityName=萨尔 id=74 zone=PLAY zonePos=0 cardId=HERO_02 player=2] CardID=HERO_02
+                //    tag=CONTROLLER value=2
+                //    tag=CARDTYPE value=HERO
+                //    tag=HEALTH value=30
+                //    tag=ZONE value=PLAY
+                //    tag=ENTITY_ID value=74
+                //    tag=FACTION value=NEUTRAL
+                //    tag=RARITY value=FREE
+                //    tag=HERO_POWER value=687
+                //    tag=SPAWN_TIME_COUNT value=1
+                tag.cardId?.apply {
+                    entityIdAndCardIdMap[tag.entity.id] = this
+                }
             }
 
             is PowerTag.PowerTaskList.ShowEntity -> {
                 handleShowEntity(tag)
+                entityIdAndCardIdMap[tag.entity.id] = tag.cardId
             }
             is PowerTag.PowerTaskList.TagChange -> {
                 handleTagChange(tag)
+
             }
         }
+
+
+//        tag.toString().log()
+
+        (tag as? ZoneUpdatable)?.apply {
+
+
+            isUpdateZone(user?.id)?.let {
+                val cardId = it.cardId ?: entityIdAndCardIdMap[it.entityId]
+
+
+//                val event = ZonePositionChangedEvent(
+//                    entityId = it.first.id,
+//                    cardId = it.first.cardId,
+//                    isUser = it.first.player == user?.id,
+//                    currentZone = it.first.zone,
+//                    newZone = it.second,
+//                    currentPosition = it.first.zonePosition,
+//                    newPosition = it.first.zonePosition
+//                )
+                zoneChangedEventList.add(it)
+                if (it.currentZone == Zone.Deck && it.newZone != Zone.Deck && it.isUser) {
+                    //从牌库中抽取一张卡
+                    //SHOW_ENTITY - Updating Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=48 zone=DECK zonePos=0 cardId= player=2]
+                    //    tag=CONTROLLER value=2
+                    //    tag=CARDTYPE value=SPELL
+                    //    tag=TAG_LAST_KNOWN_COST_IN_HAND value=1
+                    //    tag=COST value=1
+                    //    tag=PREMIUM value=1
+                    //    tag=ZONE value=HAND
+                    //    tag=ENTITY_ID value=48
+                    //    tag=ELITE value=1
+                    //    tag=CLASS value=SHAMAN
+                    //    tag=RARITY value=LEGENDARY
+                    //    tag=478 value=2
+                    //    tag=QUEST_PROGRESS_TOTAL value=3
+                    //    tag=676 value=1
+                    //    tag=839 value=1
+                    //    tag=1043 value=1
+                    //    tag=1068 value=0
+                    //    tag=QUEST_REWARD_DATABASE_ID value=64323
+                    //    tag=SPAWN_TIME_COUNT value=1
+
+                    //或者 探底
+                    //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=28 zone=DECK zonePos=0 cardId= player=1] tag=1068 value=3
+                    //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=28 zone=DECK zonePos=0 cardId= player=1] tag=1068 value=0
+                    //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=28 zone=DECK zonePos=0 cardId= player=1] tag=1037 value=1
+                    //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=28 zone=DECK zonePos=0 cardId= player=1] tag=ZONE value=HAND
+                    //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=28 zone=DECK zonePos=0 cardId= player=1] tag=ZONE_POSITION value=6
+
+                    //探底抽上来的卡是没有cardId的
+                    removeCardFromDeck(cardId)
+
+                } else if (it.newZone == Zone.Deck && it.currentZone != Zone.Deck && it.isUser) {
+
+                    //当心探底
+                    //SHOW_ENTITY - Updating Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=28 zone=DECK zonePos=0 cardId= player=1] CardID=DED_002
+                    //    tag=CONTROLLER value=1
+                    //    tag=CARDTYPE value=SPELL
+                    //    tag=TAG_LAST_KNOWN_COST_IN_HAND value=2
+                    //    tag=COST value=2
+                    //    tag=ZONE value=DECK
+                    //    tag=ENTITY_ID value=28
+                    //    tag=RARITY value=RARE
+                    //    tag=DISCOVER value=1
+                    //    tag=478 value=1
+                    //    tag=1043 value=1
+                    //    tag=1068 value=0
+                    //    tag=USE_DISCOVER_VISUALS value=1
+                    //    tag=SPAWN_TIME_COUNT value=1
+                    //    tag=SPELL_SCHOOL value=1
+                    //    tag=1711 value=1
+                    //    tag=MINI_SET value=1
+
+
+                    //有牌插入到牌库
+                    //TAG_CHANGE Entity=[entityName=冷风 id=70 zone=HAND zonePos=2 cardId=AV_266 player=2] tag=ZONE value=DECK
+
+                    //会出现id为空的情况
+                    //FULL_ENTITY - Updating [entityName=UNKNOWN ENTITY [cardType=INVALID] id=17 zone=DECK zonePos=0 cardId= player=1] CardID=
+                    //    tag=ZONE value=DECK
+                    //    tag=CONTROLLER value=1
+                    //    tag=ENTITY_ID value=17
+                    insertCardToDeck(cardId)
+
+                } else if (it.currentZone == Zone.Play && it.newZone == Zone.Graveyard) {
+                    onGraveyardCardsChanged(cardId, it.isUser)
+                }
+            }
+        }
+
+
     }
 
 
@@ -254,13 +372,13 @@ class MainViewModel @Inject constructor(
 
         if (tagChange.entity.player == user?.id && tagChange.entity.zone == Zone.Hand && tagChange.tag == "ZONE" && tagChange.value == "DECK") {
             //TAG_CHANGE Entity=[entityName=冷风 id=15 zone=HAND zonePos=3 cardId=AV_266 player=1] tag=ZONE value=DECK
-            insertCardToDeck(tagChange.entity.cardId!!)
+//            insertCardToDeck(tagChange.entity.cardId!!)
         } else if (tagChange.tag == "ZONE" && tagChange.value == "GRAVEYARD" && tagChange.entity.zone == Zone.Play) {
             //TAG_CHANGE Entity=[entityName=破霰元素 id=62 zone=PLAY zonePos=1 cardId=AV_260 player=2] tag=ZONE value=GRAVEYARD
             //随从死亡后进入墓地
             //TAG_CHANGE Entity=[entityName=始生研习 id=63 zone=PLAY zonePos=0 cardId=SCH_270 player=2] tag=ZONE value=GRAVEYARD
             //打出法术
-            onGraveyardCardsChanged(tagChange.entity)
+//            onGraveyardCardsChanged(tagChange.entity)
 
         } else if (tagChange.isGameComplete) {
             "游戏结束了".log()
@@ -287,8 +405,24 @@ class MainViewModel @Inject constructor(
     private fun onGameOver() {
         viewModelScope.launch {
             //保存游戏
+
             game.endTime = System.currentTimeMillis()
             gameDao.insert(game)
+            zonePositionChangedEventDao.insertAll(zoneChangedEventList.map {
+                it.cardId = entityIdAndCardIdMap[it.entityId]
+                it.gameId = game.id
+                it.cardName = allCard.find { card: Card ->
+                    it.cardId == card.id
+                }?.name
+
+                it
+            })
+            entityIdAndCardIdMap.clear()
+            zoneChangedEventList.clear()
+            getFileStream("Power.log")?.apply {
+                saveLogFileUseCase(game.id to this)
+            }
+
             delay(1000)
             clearPowerFile()
         }
@@ -324,7 +458,7 @@ class MainViewModel @Inject constructor(
             //    tag=1068 value=0
             //    tag=SPAWN_TIME_COUNT value=1
             //    tag=SPELL_SCHOOL value=3
-            removeCardFromDeck(showEntity.cardId)
+//            removeCardFromDeck(showEntity.cardId)
         } else if (showEntity.entity.player == user?.id && showEntity.entity.zone == Zone.Deck && showEntity.payloads["ZONE"].equals(
                 "GRAVEYARD",
                 true
@@ -332,29 +466,27 @@ class MainViewModel @Inject constructor(
         ) {
             //爆牌
             // ShowEntity(entity=Entity(entityName=UNKNOWN ENTITY, gameCardType=Invalid, id=54, zone=Deck, zonePosition=0, cardId=null, player=2), cardId=OG_176, payloads={CONTROLLER=2, CARDTYPE=SPELL, TAG_LAST_KNOWN_COST_IN_HAND=3, COST=3, ZONE=GRAVEYARD, ENTITY_ID=54, RARITY=COMMON, 478=2, 1037=2, 1043=1, 1068=0, SPAWN_TIME_COUNT=1, SPELL_SCHOOL=6})
-            removeCardFromDeck(showEntity.cardId)
+//            removeCardFromDeck(showEntity.cardId)
 
         }
     }
 
-    private fun removeCardFromDeck(cardId: String) {
+    private fun removeCardFromDeck(cardId: String?) {
         onDeckCardsChanged(cardId, false)
     }
 
-    private fun insertCardToDeck(cardId: String) {
+    private fun insertCardToDeck(cardId: String?) {
         onDeckCardsChanged(cardId, true)
     }
 
 
-    private fun onGraveyardCardsChanged(entity: Entity) {
+    private fun onGraveyardCardsChanged(cardId: String?, isUser: Boolean) {
 
         //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=106 zone=PLAY zonePos=0 cardId= player=1] tag=ZONE value=GRAVEYARD
         //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=5 zone=SECRET zonePos=0 cardId= player=1] tag=COST value=2
         //如果对面打出一张奥秘拍 会直接进入墓地
-        val cardId = entity.cardId
 //            ?: throw RuntimeException("没有id $entity")
         if (cardId == null) {
-            "发现了一个没有id的卡牌插入到墓地 $entity".log()
             return
         }
         val card = findCardById(cardId)
@@ -367,7 +499,6 @@ class MainViewModel @Inject constructor(
 //        "插入一张牌到墓地 $card $entity".log()
 
         //TAG_CHANGE Entity=[entityName=破霰元素 id=62 zone=PLAY zonePos=1 cardId=AV_260 player=2] tag=ZONE value=GRAVEYARD
-        val isUser = entity.player == user?.id
         if (isUser) {
 //            viewModelScope.launch {
 //                updateCardList(
@@ -398,37 +529,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun onDeckCardsChanged(cardId: String, insert: Boolean) {
+    private fun onDeckCardsChanged(cardId: String?, insert: Boolean) {
+
+        if (cardId == null) {
+            return
+        }
 
         val card = findCardById(cardId)
 
-//        "牌库中的一张卡牌数量发生了变化 $card ，是否是插入 $insert".log()
+        updateCardList(card, _deckLeftCardList, insert)
 
-//        updateCardList(card, _deckLeftCardList, insert)
-        viewModelScope.launch {
-            updateCardList(card, _deckLeftCardList, insert)
-        }
-
-
-//        val currentCardList = _deckLeftCardList.value.toMutableList()
-//
-//        val target = currentCardList.find {
-//            it.cardEntity.id == cardId
-//        }
-//        if (target == null) {
-//            //新加入一张卡牌
-//            currentCardList.add(CardBean(card, 1))
-//        } else {
-//            target.count = if (insert) (target.count + 1) else (target.count - 1)
-//        }
-//        currentCardList.sortBy { it.cardEntity.cost }
-//
-//        _deckLeftCardList.value = currentCardList.filter {
-//            it.count != 0
-//        }.apply {
-//            val list = map { it.cardEntity.name to it.count }
-//            "准备发送的数据是 $list".log()
-//        }
     }
 
     private fun findCardById(cardId: String) =
@@ -466,14 +576,13 @@ class MainViewModel @Inject constructor(
     }
 
     companion object {
-        private suspend fun updateCardList(
+        private fun updateCardList(
             card: Card,
             mutableStateFlow: MutableStateFlow<List<CardBean>>,
             insert: Boolean,
-            dispatcher: CoroutineDispatcher = Dispatchers.IO
-        ) = withContext(dispatcher) {
+        ) {
             if (card.type == CardType.Enchantment) {
-                return@withContext
+                return
             }
             val list = mutableStateFlow.value.toMutableList()
             val bean = list.find {
@@ -487,6 +596,10 @@ class MainViewModel @Inject constructor(
                 list.add(CardBean(card, 1))
             } else {
                 bean.count = if (insert) bean.count + 1 else bean.count - 1
+            }
+
+            if (bean?.count == 3) {
+                "插入了3张进去？ ".log()
             }
 
             mutableStateFlow.value = list.sortedBy {

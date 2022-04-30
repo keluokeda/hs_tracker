@@ -1,0 +1,326 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "720ca460a50c2d8a7f6bf96c98cf4358",
+    "entities": [
+      {
+        "tableName": "card",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`artist` TEXT, `name` TEXT NOT NULL, `cost` INTEGER NOT NULL, `id` TEXT NOT NULL, `dbfId` INTEGER NOT NULL, `text` TEXT NOT NULL, `set` TEXT NOT NULL, `type` TEXT NOT NULL, `cardClass` TEXT, `classes` INTEGER NOT NULL, `mechanics` TEXT NOT NULL, `flavor` TEXT NOT NULL, `rarity` TEXT, `durability` INTEGER NOT NULL, `armor` INTEGER NOT NULL, `collectible` INTEGER NOT NULL, `spellSchool` TEXT, `race` TEXT, `attach` INTEGER NOT NULL, `health` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "artist",
+            "columnName": "artist",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cost",
+            "columnName": "cost",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dbfId",
+            "columnName": "dbfId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "set",
+            "columnName": "set",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cardClass",
+            "columnName": "cardClass",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "classes",
+            "columnName": "classes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mechanics",
+            "columnName": "mechanics",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "flavor",
+            "columnName": "flavor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rarity",
+            "columnName": "rarity",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "durability",
+            "columnName": "durability",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "armor",
+            "columnName": "armor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "collectible",
+            "columnName": "collectible",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "spellSchool",
+            "columnName": "spellSchool",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "race",
+            "columnName": "race",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attach",
+            "columnName": "attach",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "health",
+            "columnName": "health",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "game",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `build_number` TEXT NOT NULL, `game_type` TEXT NOT NULL, `format_type` TEXT NOT NULL, `scenario_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `opponent_name` TEXT NOT NULL, `is_user_first` INTEGER, `user_deck_name` TEXT NOT NULL, `user_deck_code` TEXT NOT NULL, `is_user_win` INTEGER, `user_hero` TEXT, `opponent_class` TEXT, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "buildNumber",
+            "columnName": "build_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gameType",
+            "columnName": "game_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "formatType",
+            "columnName": "format_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scenarioID",
+            "columnName": "scenario_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "opponentName",
+            "columnName": "opponent_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUserFirst",
+            "columnName": "is_user_first",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userDeckName",
+            "columnName": "user_deck_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userDeckCode",
+            "columnName": "user_deck_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUserWin",
+            "columnName": "is_user_win",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userHero",
+            "columnName": "user_hero",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "opponentHero",
+            "columnName": "opponent_class",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "start_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endTime",
+            "columnName": "end_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "zone_position_updated_event",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `game_id` TEXT NOT NULL, `entity_id` INTEGER NOT NULL, `card_id` TEXT, `card_name` TEXT, `is_user` INTEGER NOT NULL, `current_zone` TEXT NOT NULL, `new_zone` TEXT NOT NULL, `current_position` INTEGER NOT NULL, `new_position` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityId",
+            "columnName": "entity_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cardId",
+            "columnName": "card_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cardName",
+            "columnName": "card_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isUser",
+            "columnName": "is_user",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentZone",
+            "columnName": "current_zone",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newZone",
+            "columnName": "new_zone",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentPosition",
+            "columnName": "current_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newPosition",
+            "columnName": "new_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '720ca460a50c2d8a7f6bf96c98cf4358')"
+    ]
+  }
+}

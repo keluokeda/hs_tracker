@@ -90,5 +90,22 @@
     <string name="module_holy">Holy</string>
     <string name="module_Fel">Fel</string>
     <string name="module_version_code_helper_text">No input means to get the latest</string>
+    <string name="module_records">Records</string>
+    <string name="module_win">Won</string>
+    <string name="module_lost">Lost</string>
+
+    <string name="module_unknown">Unknown</string>
+    <string name="module_standard">Standard</string>
+    <string name="module_wild">Wild</string>
+    <string name="module_classic">Classic</string>
+    <string name="module_ranked">Ranked</string>
+    <string name="module_casual">Casual</string>
+    <string name="module_previous">Previous</string>
+    <string name="module_slider_mode">Slider Mode</string>
+    <string name="module_list_mode">List Mode</string>
+
+    <string name="module_save_log_file">Save Log File</string>
+    <string name="module_card_list">Card List</string>
+    <string name="module_naga">Naga</string>
 
 </resources>

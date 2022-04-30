@@ -41,6 +41,16 @@ enum class Mechanics {
     Rush,
 
     /**
+     * 巨型
+     */
+    Colossal,
+
+    /**
+     * 探底
+     */
+    Dredge,
+
+    /**
      * 潜行
      */
     Stealth,

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_tile"
+        android:contentDescription="@null"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foreground="#99000000"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/module_image_tile"
+        app:layout_constraintEnd_toStartOf="@id/position"
+        app:layout_constraintStart_toEndOf="@id/cost"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="256:30"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <TextView
+        android:id="@+id/cost"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:padding="4dp"
+        android:background="@color/module_rarity_common"
+        android:textColor="@color/module_white"
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/module_white"
+        app:layout_constraintStart_toEndOf="@id/cost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+        tools:text="始生研习" />
+
+    <TextView
+        android:id="@+id/position"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:text="2"
+        app:layout_constraintDimensionRatio="1:1"
+        android:background="#353535"
+        android:gravity="center"
+        android:textColor="@color/module_white"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_tile"
+        app:layout_constraintBottom_toBottomOf="@id/image_tile"
+        android:autoSizeTextType="uniform"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

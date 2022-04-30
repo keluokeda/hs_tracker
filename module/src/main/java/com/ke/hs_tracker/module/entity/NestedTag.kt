@@ -12,7 +12,8 @@ internal sealed interface NestedTag {
     //FULL_ENTITY - Updating [entityName=UNKNOWN ENTITY [cardType=INVALID] id=63 zone=DECK zonePos=0 cardId= player=2] CardID=
     //FULL_ENTITY - Updating [entityName=全副武装！ id=65 zone=PLAY zonePos=0 cardId=HERO_01bp player=1] CardID=HERO_01bp
     data class FullEntity(
-        val entity: Entity
+        val entity: Entity,
+        val cardId: String?
     ) : NestedTag
 
     data class Block(

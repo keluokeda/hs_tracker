@@ -21,19 +21,23 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <Button
-        android:id="@+id/clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="清空"/>
 
-    <Button
-        android:id="@+id/next"
+    <TextView
+        android:id="@+id/create_record"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/module_next"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="?selectableItemBackground"
+        android:padding="16dp"
+        android:text="生成对战记录" />
+
+    <TextView
+        android:id="@+id/clear_log"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:padding="16dp"
+        android:text="清空Power.log文件" />
 
 </LinearLayout>

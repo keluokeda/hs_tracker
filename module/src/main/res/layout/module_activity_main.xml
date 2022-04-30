@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/module_app_name"
+            app:navigationIcon="@drawable/module_baseline_arrow_back_white_24dp"
             app:titleTextColor="@color/module_white" />
 
     </com.google.android.material.appbar.AppBarLayout>

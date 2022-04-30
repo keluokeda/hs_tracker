@@ -13,10 +13,12 @@ android {
         applicationId "com.ke.hs_tracker.app"
         minSdk libs.versions.minsdk.get().toInteger()
         targetSdk libs.versions.targetsdk.get().toInteger()
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 9
+        versionName "1.0.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
     }
     buildFeatures {
         viewBinding = true

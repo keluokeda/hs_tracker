@@ -2,6 +2,8 @@ package com.ke.hs_tracker.module.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.CompoundButton
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.ke.hs_tracker.module.BuildConfig
@@ -12,25 +14,40 @@ import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
 import com.ke.hs_tracker.module.ui.test.TestActivity
 import com.ke.hs_tracker.module.ui.theme.ThemeActivity
 import com.ke.hs_tracker.module.ui.writeconfig.WriteConfigActivity
+import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
-class SettingsActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class SettingsActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
     private lateinit var binding: ModuleActivitySettingsBinding
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ModuleActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.apply {
-            setDisplayShowHomeEnabled(true)
 
+
+
+        launchAndRepeatWithViewLifecycle {
+            settingsViewModel.saveLogFileEnable.collect {
+                binding.saveLogFile.setOnCheckedChangeListener(null)
+                binding.saveLogFile.isChecked = it
+                binding.saveLogFile.setOnCheckedChangeListener(this@SettingsActivity)
+            }
         }
-        setTitle(R.string.module_settings)
-        binding.test.isVisible = BuildConfig.DEBUG
-        binding.test.setOnClickListener {
-            startActivity(Intent(this, TestActivity::class.java))
-        }
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
+
+        binding.toolbar.apply {
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
+            this.menu.add(0, 0, 0, "测试")
+            this.setOnMenuItemClickListener {
+                startActivity(Intent(this@SettingsActivity, TestActivity::class.java))
+
+                true
+            }
         }
 
 
@@ -64,5 +81,9 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intent, "Send To"))
         }
 
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton, checked: Boolean) {
+        settingsViewModel.setSaveLogFileEnable(checked)
     }
 }

@@ -5,9 +5,7 @@ import androidx.room.Room
 import com.ke.hs_tracker.module.api.HearthStoneJsonApi
 import com.ke.hs_tracker.module.data.PreferenceStorage
 import com.ke.hs_tracker.module.data.PreferenceStorageImpl
-import com.ke.hs_tracker.module.db.CardDao
-import com.ke.hs_tracker.module.db.Database
-import com.ke.hs_tracker.module.db.GameDao
+import com.ke.hs_tracker.module.db.*
 import com.ke.hs_tracker.module.entity.*
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -80,6 +78,12 @@ class Module {
 
     @Provides
     fun provideGameDao(database: Database): GameDao = database.gameDao()
+
+
+
+    @Provides
+    fun provideZonePositionChangedEventDao(database: Database): ZonePositionChangedEventDao =
+        database.zonePositionChangedEventDao()
 
     @Provides
     @Singleton

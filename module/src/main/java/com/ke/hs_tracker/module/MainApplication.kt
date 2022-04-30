@@ -191,7 +191,7 @@ fun ModuleItemCardBinding.bindCard(card: Card) {
     cost.text = card.cost.toString()
 
     card.rarity?.apply {
-        this@bindCard.name.setTextColor(
+        this@bindCard.cost.setBackgroundColor(
             ResourcesCompat.getColor(
                 root.context.resources,
                 colorRes,

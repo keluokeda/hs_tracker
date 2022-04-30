@@ -9,6 +9,11 @@ import javax.inject.Inject
 interface PreferenceStorage {
 
     var theme: Int
+
+    /**
+     * 保存日志文件
+     */
+    var saveLogFile: Boolean
 }
 
 class PreferenceStorageImpl @Inject constructor(
@@ -29,8 +34,14 @@ class PreferenceStorageImpl @Inject constructor(
             mmkv.encode(KEY_THEME, value)
         }
 
+    override var saveLogFile: Boolean
+        get() = mmkv.getBoolean(KEY_SAVE_LOG_FILE, false)
+        set(value) {
+            mmkv.encode(KEY_SAVE_LOG_FILE, value)
+        }
 
     companion object {
         private const val KEY_THEME = "KEY_THEME"
+        private const val KEY_SAVE_LOG_FILE = "KEY_SAVE_LOG_FILE"
     }
 }

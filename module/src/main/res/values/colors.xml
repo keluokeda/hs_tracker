@@ -21,4 +21,9 @@
     <color name="module_neutral">#ccc</color>
     <color name="module_death_knight">#C41F3B</color>
     <color name="module_divider">#ccc</color>
+
+    <color name="module_rarity_common">#828282</color>
+    <color name="module_rarity_rare">#3d5375</color>
+    <color name="module_rarity_epic">#604b7d</color>
+    <color name="module_rarity_legendary">#845c2e</color>
 </resources>

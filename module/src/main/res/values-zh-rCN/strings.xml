@@ -90,5 +90,21 @@
     <string name="module_holy">神圣</string>
     <string name="module_Fel">邪能</string>
     <string name="module_version_code_helper_text">不输入表示获取最新的</string>
+    <string name="module_records">战绩</string>
+    <string name="module_win">胜利</string>
+    <string name="module_lost">失败</string>
+
+    <string name="module_unknown">未知</string>
+    <string name="module_standard">标准</string>
+    <string name="module_wild">狂野</string>
+    <string name="module_classic">经典</string>
+    <string name="module_ranked">排名</string>
+    <string name="module_casual">休闲</string>
+    <string name="module_previous">上一步</string>
+    <string name="module_slider_mode">进度条模式</string>
+    <string name="module_list_mode">列表模式</string>
+    <string name="module_save_log_file">保存日志文件</string>
+    <string name="module_card_list">卡牌列表</string>
+    <string name="module_naga">娜迦</string>
 
 </resources>
