@@ -24,4 +24,16 @@ interface GameDao {
      */
     @Query("select * from game where user_hero = :cardClass")
     suspend fun getByHero(cardClass: CardClass): List<Game>
+
+    /**
+     * 获取总的对局数
+     */
+    @Query("select count(*) from game")
+    suspend fun getGameCount(): Int
+
+    /**
+     * 获取玩家胜率对局数
+     */
+    @Query("select count(*) from game where is_user_win = 1")
+    suspend fun getUserWinCount(): Int
 }

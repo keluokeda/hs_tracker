@@ -108,5 +108,7 @@
     <string name="module_card_list">Card List</string>
     <string name="module_naga">Naga</string>
     <string name="module_summary">Summary</string>
+    <string name="module_by_class">By Class</string>
+    <string name="module_by_deck">By Deck</string>
 
 </resources>

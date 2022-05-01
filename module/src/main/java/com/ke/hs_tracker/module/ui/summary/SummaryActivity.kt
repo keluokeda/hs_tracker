@@ -2,21 +2,17 @@ package com.ke.hs_tracker.module.ui.summary
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivitySummaryBinding
-import com.ke.hs_tracker.module.databinding.ModuleHeaderSummaryBinding
-import com.ke.hs_tracker.module.databinding.ModuleItemSummaryBattleBinding
 import com.ke.hs_tracker.module.ui.main.MainActivity
 import com.ke.hs_tracker.module.ui.records.RecordsActivity
 import com.ke.hs_tracker.module.ui.settings.SettingsActivity
 import com.ke.mvvm.base.data.ViewStatus
-import com.ke.mvvm.base.ui.BaseViewBindingAdapter
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -24,33 +20,33 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class SummaryActivity : AppCompatActivity() {
 
-    private val adapter =
-        object : BaseViewBindingAdapter<HeroBattleItem, ModuleItemSummaryBattleBinding>() {
-            override fun bindItem(
-                item: HeroBattleItem,
-                viewBinding: ModuleItemSummaryBattleBinding,
-                viewType: Int,
-                position: Int
-            ) {
-                viewBinding.apply {
-                    allCount.text = "总：" + (item.lostCount + item.winCount).toString()
-                    winCount.text = "胜：" + item.winCount.toString()
-                    lostCount.text = "负：" + item.lostCount.toString()
-                    image.setImageResource(item.hero.roundIcon!!)
-                    name.setText(item.hero.titleRes)
-                    winRate.text = item.rate.toString() + "%"
-                }
-            }
-
-            override fun createViewBinding(
-                inflater: LayoutInflater,
-                parent: ViewGroup,
-                viewType: Int
-            ): ModuleItemSummaryBattleBinding {
-                return ModuleItemSummaryBattleBinding.inflate(inflater, parent, false)
-            }
-
-        }
+//    private val adapter =
+//        object : BaseViewBindingAdapter<HeroBattleItem, ModuleItemSummaryBattleBinding>() {
+//            override fun bindItem(
+//                item: HeroBattleItem,
+//                viewBinding: ModuleItemSummaryBattleBinding,
+//                viewType: Int,
+//                position: Int
+//            ) {
+//                viewBinding.apply {
+//                    allCount.text = "总：" + (item.lostCount + item.winCount).toString()
+//                    winCount.text = "胜：" + item.winCount.toString()
+//                    lostCount.text = "负：" + item.lostCount.toString()
+//                    image.setImageResource(item.hero.roundIcon!!)
+//                    name.setText(item.hero.titleRes)
+//                    winRate.text = item.rate.toString() + "%"
+//                }
+//            }
+//
+//            override fun createViewBinding(
+//                inflater: LayoutInflater,
+//                parent: ViewGroup,
+//                viewType: Int
+//            ): ModuleItemSummaryBattleBinding {
+//                return ModuleItemSummaryBattleBinding.inflate(inflater, parent, false)
+//            }
+//
+//        }
 
     private lateinit var binding: ModuleActivitySummaryBinding
     private val summaryViewModel: SummaryViewModel by viewModels()
@@ -59,9 +55,9 @@ class SummaryActivity : AppCompatActivity() {
         binding = ModuleActivitySummaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter.addFooterView(
-            layoutInflater.inflate(R.layout.module_item_footer_with_fab, null)
-        )
+//        adapter.addFooterView(
+//            layoutInflater.inflate(R.layout.module_item_footer_with_fab, null)
+//        )
 
         binding.toolbar.apply {
             menu.clear()
@@ -87,35 +83,40 @@ class SummaryActivity : AppCompatActivity() {
         binding.start.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
+        val fragments = listOf(RateByHeroFragment(), RateByDeckFragment())
+        val titles = listOf(R.string.module_by_class, R.string.module_by_deck)
 
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            summaryViewModel.refresh()
+        val adapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount() = fragments.size
+
+            override fun createFragment(position: Int) = fragments[position]
         }
+        binding.viewPager.adapter = adapter
+
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.setText(titles[position])
+        }.attach()
+
+//        binding.recyclerView.adapter = adapter
+//        binding.recyclerView.addItemDecoration(
+//            DividerItemDecoration(
+//                this,
+//                DividerItemDecoration.VERTICAL
+//            )
+//        )
+
         lifecycle.addObserver(summaryViewModel)
         launchAndRepeatWithViewLifecycle {
             summaryViewModel.viewStatus.collect {
                 when (it) {
                     is ViewStatus.Loading -> {
-                        binding.swipeRefreshLayout.isRefreshing = true
                     }
                     is ViewStatus.Content -> {
-                        binding.swipeRefreshLayout.isRefreshing = false
-                        adapter.removeAllHeaderView()
-                        val headerBinding = ModuleHeaderSummaryBinding.inflate(layoutInflater)
-                        headerBinding.allCount.text =
+                        binding.allCount.text =
                             "总：" + (it.data.lostCount + it.data.winCount).toString()
-                        headerBinding.winCount.text = "胜：" + it.data.winCount.toString()
-                        headerBinding.lostCount.text = "负：" + it.data.lostCount.toString()
-                        headerBinding.allWinRate.text = it.data.rate.toString()
-                        adapter.addHeaderView(headerBinding.root)
-                        adapter.setList(it.data.list)
+                        binding.winCount.text = "胜：" + it.data.winCount.toString()
+                        binding.lostCount.text = "负：" + it.data.lostCount.toString()
+                        binding.allWinRate.text = it.data.rate.toString()
                     }
                     is ViewStatus.Error -> throw IllegalArgumentException("不该出现错误的情况")
                 }

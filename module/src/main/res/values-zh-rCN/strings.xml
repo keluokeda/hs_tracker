@@ -107,5 +107,7 @@
     <string name="module_card_list">卡牌列表</string>
     <string name="module_naga">娜迦</string>
     <string name="module_summary">总览</string>
+    <string name="module_by_class">按职业</string>
+    <string name="module_by_deck">按卡组</string>
 
 </resources>

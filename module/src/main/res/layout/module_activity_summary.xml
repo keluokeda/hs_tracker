@@ -23,20 +23,68 @@
             app:titleTextColor="@color/module_white" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <TextView
+        android:id="@+id/all_win_rate"
+        style="@style/TextAppearance.MaterialComponents.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        tools:text="64" />
+
+    <TextView
+        style="@style/TextAppearance.MaterialComponents.Headline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="%"
+        app:layout_constraintBaseline_toBaselineOf="@id/all_win_rate"
+        app:layout_constraintStart_toEndOf="@id/all_win_rate" />
+
+    <TextView
+        android:id="@+id/all_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/win_count"
+        app:layout_constraintEnd_toStartOf="@id/win_count"
+        app:layout_constraintTop_toTopOf="@id/win_count"
+        tools:text="总11" />
+
+    <TextView
+        android:id="@+id/win_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textColor="@color/module_game_state"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/all_win_rate"
+        tools:text="胜：7" />
+
+    <TextView
+        android:id="@+id/lost_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:textColor="@color/module_game_state"
+        app:layout_constraintBottom_toBottomOf="@id/win_count"
+        app:layout_constraintStart_toEndOf="@id/win_count"
+        app:layout_constraintTop_toTopOf="@id/win_count"
+        tools:text="负：4" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/win_count" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@id/tab_layout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/start"
