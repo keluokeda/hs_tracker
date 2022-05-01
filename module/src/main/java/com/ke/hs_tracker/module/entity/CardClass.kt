@@ -14,7 +14,8 @@ enum class CardClass(
     val color: Int = 0,
 
     @DrawableRes
-    val roundIcon: Int? = null
+    val roundIcon: Int? = null,
+    val isHero: Boolean = true
 ) {
     /**
      * 法师
@@ -74,22 +75,22 @@ enum class CardClass(
     /**
      * 中立
      */
-    Neutral(R.string.module_neutral, R.color.module_neutral),
+    Neutral(R.string.module_neutral, R.color.module_neutral, isHero = false),
 
     /**
      * 威兹班
      */
-    Whizbang(R.string.module_whizbang, 0),
+    Whizbang(R.string.module_whizbang, 0, isHero = false),
 
     /**
      * 梦境牌
      */
-    Dream(R.string.module_dream, 0),
+    Dream(R.string.module_dream, 0, isHero = false),
 
     /**
      * 死亡骑士
      */
-    DeathKnight(R.string.module_death_knight, R.color.module_death_knight),
+    DeathKnight(R.string.module_death_knight, R.color.module_death_knight, isHero = false),
 }
 
 class CardClassAdapter {

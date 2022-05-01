@@ -1,20 +1,16 @@
 package com.ke.hs_tracker.module.ui.records
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivityRecordsBinding
 import com.ke.hs_tracker.module.databinding.ModuleItemRecordBinding
 import com.ke.hs_tracker.module.db.Game
-import com.ke.hs_tracker.module.ui.main.MainActivity
-import com.ke.hs_tracker.module.ui.settings.SettingsActivity
 import com.ke.hs_tracker.module.ui.zoneevents.ZoneEventsActivity
 import com.ke.mvvm.base.data.ViewStatus
 import com.ke.mvvm.base.ui.BaseViewBindingAdapter
@@ -55,9 +51,7 @@ class RecordsActivity : AppCompatActivity() {
             }
 
         }.apply {
-            addFooterView(
-                layoutInflater.inflate(R.layout.module_item_footer_with_fab, null)
-            )
+
 
             setOnItemClickListener { _, _, position ->
                 startActivity(Intent(this@RecordsActivity, ZoneEventsActivity::class.java).apply {
@@ -82,26 +76,27 @@ class RecordsActivity : AppCompatActivity() {
             )
         )
 
-        binding.start.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
         }
 
-        binding.toolbar.menu.apply {
-            clear()
-            add(
-                0,
-                0,
-                0,
-                R.string.module_settings
-            ).setIcon(R.drawable.module_baseline_settings_white_24dp)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
 
-
-        }
-        binding.toolbar.setOnMenuItemClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            true
-        }
+//        binding.toolbar.menu.apply {
+//            clear()
+//            add(
+//                0,
+//                0,
+//                0,
+//                R.string.module_settings
+//            ).setIcon(R.drawable.module_baseline_settings_white_24dp)
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//
+//
+//        }
+//        binding.toolbar.setOnMenuItemClickListener {
+//            startActivity(Intent(this, SettingsActivity::class.java))
+//            true
+//        }
         binding.swipeRefreshLayout.setOnRefreshListener {
             recordsViewModel.loadData()
         }

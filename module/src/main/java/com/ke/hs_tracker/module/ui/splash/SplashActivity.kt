@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.ke.hs_tracker.module.ui.permissions.PermissionsActivity
-import com.ke.hs_tracker.module.ui.records.RecordsActivity
+import com.ke.hs_tracker.module.ui.summary.SummaryActivity
 import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,7 @@ class SplashActivity : AppCompatActivity() {
 
             splashViewModel.navigationActions.collect {
                 val clazz = when (it) {
-                    SplashNavigationAction.NavigateToMain -> RecordsActivity::class.java
+                    SplashNavigationAction.NavigateToMain -> SummaryActivity::class.java
                     SplashNavigationAction.NavigateToPermissions -> PermissionsActivity::class.java
                     SplashNavigationAction.NavigateToSync -> SyncCardDataActivity::class.java
                 }

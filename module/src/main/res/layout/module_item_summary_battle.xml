@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/module_image_round_warrior" />
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintTop_toBottomOf="@id/all_count"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="战士" />
+
+    <TextView
+        android:id="@+id/all_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/name"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        tools:text="总：9" />
+
+    <TextView
+        android:id="@+id/win_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/module_game_state"
+        app:layout_constraintStart_toEndOf="@id/all_count"
+        app:layout_constraintTop_toTopOf="@id/all_count"
+        tools:text="胜：6" />
+
+    <TextView
+        android:id="@+id/lost_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/module_game_state"
+        app:layout_constraintStart_toEndOf="@id/win_count"
+        app:layout_constraintTop_toTopOf="@id/all_count"
+        tools:text="负：3" />
+
+    <TextView
+        android:id="@+id/win_rate"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image"
+        tools:text="64%" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

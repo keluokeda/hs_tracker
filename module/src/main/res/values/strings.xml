@@ -107,5 +107,6 @@
     <string name="module_save_log_file">Save Log File</string>
     <string name="module_card_list">Card List</string>
     <string name="module_naga">Naga</string>
+    <string name="module_summary">Summary</string>
 
 </resources>

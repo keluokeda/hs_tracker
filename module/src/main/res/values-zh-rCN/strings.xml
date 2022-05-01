@@ -106,5 +106,6 @@
     <string name="module_save_log_file">保存日志文件</string>
     <string name="module_card_list">卡牌列表</string>
     <string name="module_naga">娜迦</string>
+    <string name="module_summary">总览</string>
 
 </resources>
