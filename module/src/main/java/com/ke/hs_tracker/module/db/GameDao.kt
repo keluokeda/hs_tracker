@@ -10,6 +10,12 @@ interface GameDao {
     suspend fun insert(game: Game)
 
 
+    /**
+     * 插入所有
+     */
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(games: List<Game>)
+
     @Update
     suspend fun update(game: Game)
 

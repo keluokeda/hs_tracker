@@ -70,6 +70,22 @@
         app:layout_constraintTop_toBottomOf="@id/sync" />
 
     <TextView
+        android:id="@+id/migrate"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="?selectableItemBackground"
+        android:padding="16dp"
+        android:text="@string/module_data_transfer" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/module_divider"
+        app:layout_constraintTop_toBottomOf="@id/sync" />
+
+    <TextView
         android:id="@+id/code_parser"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="match_parent"

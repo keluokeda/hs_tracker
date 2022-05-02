@@ -12,4 +12,10 @@ interface ZonePositionChangedEventDao {
 
     @Query("select * from zone_position_updated_event where game_id = :gameId")
     suspend fun getAllByGameId(gameId: String): List<ZonePositionChangedEvent>
+
+    /**
+     * 获取所有
+     */
+    @Query("select * from zone_position_updated_event")
+    suspend fun getAll(): List<ZonePositionChangedEvent>
 }

@@ -38,7 +38,7 @@ class RecordsActivity : AppCompatActivity() {
                     state.isEnabled = item.isUserWin ?: true
                     val type = getString(item.formatType.title) + getString(item.gameType.title)
                     gameType.text = type
-                    state.setText(if (item.isUserWin == true) R.string.module_win else R.string.module_lost)
+                    state.setText(if (item.isUserWin == true) R.string.module_win else R.string.module_loss)
                 }
             }
 

@@ -91,8 +91,8 @@
     <string name="module_Fel">Fel</string>
     <string name="module_version_code_helper_text">No input means to get the latest</string>
     <string name="module_records">Records</string>
-    <string name="module_win">Won</string>
-    <string name="module_lost">Lost</string>
+    <string name="module_win">Win</string>
+    <string name="module_loss">Loss</string>
 
     <string name="module_unknown">Unknown</string>
     <string name="module_standard">Standard</string>
@@ -110,5 +110,11 @@
     <string name="module_summary">Summary</string>
     <string name="module_by_class">By Class</string>
     <string name="module_by_deck">By Deck</string>
+    <string name="module_view_all_games">View All Games</string>
+    <string name="module_data_transfer">Migrate Data</string>
+    <string name="module_title_migrate_date_to_another_phone">Migrate data to another phone</string>
+    <string name="module_title_migrate_data_to_this_phone">Migrate data from another phone to this phone</string>
+    <string name="module_receive">Receive</string>
+    <string name="module_port">Port</string>
 
 </resources>

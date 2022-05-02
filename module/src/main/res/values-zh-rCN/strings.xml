@@ -92,7 +92,7 @@
     <string name="module_version_code_helper_text">不输入表示获取最新的</string>
     <string name="module_records">战绩</string>
     <string name="module_win">胜利</string>
-    <string name="module_lost">失败</string>
+    <string name="module_loss">失败</string>
 
     <string name="module_unknown">未知</string>
     <string name="module_standard">标准</string>
@@ -109,5 +109,11 @@
     <string name="module_summary">总览</string>
     <string name="module_by_class">按职业</string>
     <string name="module_by_deck">按卡组</string>
+    <string name="module_view_all_games">查看所有对局</string>
+    <string name="module_data_transfer">迁移数据</string>
+    <string name="module_title_migrate_date_to_another_phone">迁移数据到另一台手机</string>
+    <string name="module_title_migrate_data_to_this_phone">从另一台手机迁移数据到本手机</string>
+    <string name="module_receive">接收</string>
+    <string name="module_port">端口</string>
 
 </resources>

@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ke.hs_tracker.module.entity.Zone
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "zone_position_updated_event")
 data class ZonePositionChangedEvent(
     @PrimaryKey(autoGenerate = false)

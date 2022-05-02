@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey
 import com.ke.hs_tracker.module.entity.CardClass
 import com.ke.hs_tracker.module.entity.FormatType
 import com.ke.hs_tracker.module.entity.GameType
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "game")
 data class Game(
     @PrimaryKey(autoGenerate = false)

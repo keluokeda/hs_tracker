@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import com.ke.hs_tracker.module.BuildConfig
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivitySettingsBinding
 import com.ke.hs_tracker.module.ui.deck.DeckCodeParserActivity
+import com.ke.hs_tracker.module.ui.migrate.MigrateMainActivity
 import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
 import com.ke.hs_tracker.module.ui.test.TestActivity
 import com.ke.hs_tracker.module.ui.theme.ThemeActivity
@@ -58,6 +57,10 @@ class SettingsActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
         binding.codeParser.setOnClickListener {
             startActivity(Intent(this, DeckCodeParserActivity::class.java))
 
+        }
+
+        binding.migrate.setOnClickListener {
+            startActivity(Intent(this, MigrateMainActivity::class.java))
         }
 
         binding.rewriteConfigFile.setOnClickListener {
