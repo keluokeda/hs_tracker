@@ -116,5 +116,13 @@
     <string name="module_title_migrate_data_to_this_phone">Migrate data from another phone to this phone</string>
     <string name="module_receive">Receive</string>
     <string name="module_port">Port</string>
+    <string name="module_pie_chart">Pie Chart</string>
+    <string name="module_all_win_rate">Overall Win Rate</string>
+    <string name="module_first_hand_rate">First Hand Rate</string>
+    <string name="module_first_hand_percent">First Hand Percent</string>
+    <string name="module_second_hand_rate">Second Hand Rate</string>
+    <string name="module_class_distribution">Class Distribution</string>
+    <string name="module_first_hand">First Hand</string>
+    <string name="module_second_hand">Second Hand</string>
 
 </resources>

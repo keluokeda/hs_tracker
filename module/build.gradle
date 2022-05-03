@@ -95,4 +95,5 @@ dependencies {
     kapt(libs.room.compiler)
 
     implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

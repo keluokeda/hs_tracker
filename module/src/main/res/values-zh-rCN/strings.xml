@@ -115,5 +115,12 @@
     <string name="module_title_migrate_data_to_this_phone">从另一台手机迁移数据到本手机</string>
     <string name="module_receive">接收</string>
     <string name="module_port">端口</string>
-
+    <string name="module_pie_chart">饼状图</string>
+    <string name="module_all_win_rate">总体胜率</string>
+    <string name="module_first_hand_rate">先手胜率</string>
+    <string name="module_first_hand_percent">先手概率</string>
+    <string name="module_second_hand_rate">后手胜率</string>
+    <string name="module_class_distribution">职业分布</string>
+    <string name="module_first_hand">先手</string>
+    <string name="module_second_hand">后手</string>
 </resources>

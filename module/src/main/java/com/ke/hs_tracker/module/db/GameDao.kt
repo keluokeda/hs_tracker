@@ -19,9 +19,15 @@ interface GameDao {
     @Update
     suspend fun update(game: Game)
 
+    /**
+     * 删除全部
+     */
     @Query("delete from game")
     suspend fun deleteAll()
 
+    /**
+     * 查询所有
+     */
     @Query("select * from game")
     suspend fun getAll(): List<Game>
 

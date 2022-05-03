@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.chart.SummaryChartActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/module_baseline_arrow_back_white_24dp"
+            app:title="@string/module_summary"
+            app:titleTextColor="@color/module_white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/module_all_win_rate" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/all"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/module_chart_height" />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/module_first_hand_percent" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/first_hand_percent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/module_chart_height" />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/module_first_hand_rate" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/first_hand_rate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/module_chart_height" />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/module_second_hand_rate" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/second_hand_rate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/module_chart_height" />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/module_class_distribution" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/class_distribution"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/module_chart_height" />
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

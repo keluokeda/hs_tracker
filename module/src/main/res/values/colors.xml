@@ -26,4 +26,6 @@
     <color name="module_rarity_rare">#3d5375</color>
     <color name="module_rarity_epic">#604b7d</color>
     <color name="module_rarity_legendary">#845c2e</color>
+    <color name="module_loss">#ff0000</color>
+    <color name="module_win">#00ff00</color>
 </resources>
