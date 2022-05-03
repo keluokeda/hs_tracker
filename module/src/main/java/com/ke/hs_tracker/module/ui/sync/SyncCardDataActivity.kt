@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivitySyncCardDataBinding
-import com.ke.hs_tracker.module.ui.main.MainActivity
+import com.ke.hs_tracker.module.ui.summary.SummaryActivity
 import com.ke.mvvm.base.ui.collectLoadingDialog
 import com.ke.mvvm.base.ui.collectSnackbarFlow
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
@@ -51,7 +51,8 @@ class SyncCardDataActivity : AppCompatActivity() {
                     }
                     SyncCardDataNavigationAction.NavigateToMain -> {
                         {
-                            val intent = Intent(this@SyncCardDataActivity, MainActivity::class.java)
+                            val intent =
+                                Intent(this@SyncCardDataActivity, SummaryActivity::class.java)
                             startActivity(intent)
                             finish()
                         }
