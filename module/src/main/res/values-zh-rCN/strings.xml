@@ -123,4 +123,8 @@
     <string name="module_class_distribution">职业分布</string>
     <string name="module_first_hand">先手</string>
     <string name="module_second_hand">后手</string>
+    <string name="module_class_battle_detail">职业对战明细</string>
+    <string name="module_opponent_class">对手职业</string>
+    <string name="module_times">场数</string>
+    <string name="module_win_rate">胜率</string>
 </resources>

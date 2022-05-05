@@ -6,4 +6,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RateByHeroFragment : BattleRateListFragment() {
     override val viewModel: HeroBattleRateListViewModel by viewModels()
+
+
 }

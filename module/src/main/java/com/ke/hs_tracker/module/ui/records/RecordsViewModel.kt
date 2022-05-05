@@ -24,6 +24,8 @@ class RecordsViewModel @Inject constructor(private val gameDao: GameDao) :
             showContent(gameDao.getAll().filter {
                 //掉线问题
                 it.opponentHero != null && it.isUserFirst != null
+            }.sortedByDescending {
+                it.endTime
             })
         }
     }

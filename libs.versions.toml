@@ -1,6 +1,6 @@
 [versions]
 compilesdk = "32"
-minsdk = "23"
+minsdk = "24"
 targetsdk = "32"
 
 retrofit = "2.9.0"

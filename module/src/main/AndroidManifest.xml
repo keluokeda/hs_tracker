@@ -24,6 +24,9 @@
         android:label="@string/module_app_name"
         android:theme="@style/module_Theme.Hs_tracker">
         <activity
+            android:name=".ui.classbattledetail.ClassBattleDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.chart.SummaryChartActivity"
             android:exported="false" />
         <activity

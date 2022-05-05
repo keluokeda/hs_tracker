@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleItemSummaryBattleBinding
+import com.ke.hs_tracker.module.ui.classbattledetail.ClassBattleDetailActivity
 import com.ke.mvvm.base.ui.BaseViewBindingAdapter
 
 internal class BattleRateItemAdapter :
@@ -24,6 +25,14 @@ internal class BattleRateItemAdapter :
                 is BattleRateItem.ClassBattleRate -> {
                     image.setImageResource(item.cardClass.roundIcon!!)
                     name.setText(item.cardClass.titleRes)
+                    root.setOnClickListener {
+                        it.context.startActivity(
+                            ClassBattleDetailActivity.createIntent(
+                                it.context,
+                                item.cardClass
+                            )
+                        )
+                    }
                 }
                 is BattleRateItem.DeckBattleRate -> {
                     image.setImageResource(R.drawable.module_image_round_demon_hunter)

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collect
 
 abstract class BattleRateListFragment : Fragment() {
 
-    private val adapter = BattleRateItemAdapter()
+    internal val adapter = BattleRateItemAdapter()
 
     private val binding: KeMvvmLayoutBaseRefreshListRetryBinding by viewbind()
 

@@ -124,5 +124,9 @@
     <string name="module_class_distribution">Class Distribution</string>
     <string name="module_first_hand">First Hand</string>
     <string name="module_second_hand">Second Hand</string>
+    <string name="module_class_battle_detail">Class Battle Detail</string>
+    <string name="module_opponent_class">Opponent Class</string>
+    <string name="module_times">Times</string>
+    <string name="module_win_rate">Win Rate</string>
 
 </resources>
