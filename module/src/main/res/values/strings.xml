@@ -128,5 +128,10 @@
     <string name="module_opponent_class">Opponent Class</string>
     <string name="module_times">Times</string>
     <string name="module_win_rate">Win Rate</string>
+    <string name="module_deck_battle_detail">Deck Battle Detail</string>
+    <string name="module_cost">Cost</string>
+    <string name="module_attack">Attack</string>
+    <string name="module_record">Records</string>
+    <string name="module_deck_detail">Deck Detail</string>
 
 </resources>

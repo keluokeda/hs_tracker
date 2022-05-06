@@ -15,4 +15,11 @@ data class CardBean(
         return Random.nextInt()
     }
 
+    fun toCardList(): List<Card> {
+        val list = mutableListOf<Card>()
+        repeat(count) {
+            list.add(card)
+        }
+        return list
+    }
 }

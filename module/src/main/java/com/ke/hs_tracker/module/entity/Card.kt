@@ -62,7 +62,7 @@ data class Card(
     /**
      * 随从攻击力
      */
-    val attach: Int = 0,
+    val attack: Int = 0,
     /**
      * 随从生命值
      */

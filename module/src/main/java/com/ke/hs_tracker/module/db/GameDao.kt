@@ -48,4 +48,13 @@ interface GameDao {
      */
     @Query("select count(*) from game where is_user_win = 1")
     suspend fun getUserWinCount(): Int
+
+    /**
+     * 根据卡组代码和名称查询
+     */
+    @Query("select * from game where user_deck_code = :code and user_deck_name = :name")
+    suspend fun getByDeckCodeAndName(
+        code: String,
+        name: String
+    ): List<Game>
 }

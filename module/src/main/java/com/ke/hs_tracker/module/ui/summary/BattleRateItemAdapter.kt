@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleItemSummaryBattleBinding
 import com.ke.hs_tracker.module.ui.classbattledetail.ClassBattleDetailActivity
+import com.ke.hs_tracker.module.ui.deckbattledetail.DeckBattleDetailActivity
 import com.ke.mvvm.base.ui.BaseViewBindingAdapter
 
 internal class BattleRateItemAdapter :
@@ -37,6 +38,15 @@ internal class BattleRateItemAdapter :
                 is BattleRateItem.DeckBattleRate -> {
                     image.setImageResource(R.drawable.module_image_round_demon_hunter)
                     name.text = item.deckName
+                    root.setOnClickListener {
+                        it.context.startActivity(
+                            DeckBattleDetailActivity.createIntent(
+                                it.context,
+                                item.deckCode,
+                                item.deckName
+                            )
+                        )
+                    }
                 }
             }
         }

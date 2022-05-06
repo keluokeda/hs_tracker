@@ -8,49 +8,52 @@ import com.squareup.moshi.ToJson
 /**
  * 随从种族
  */
-enum class Race(@StringRes val titleRes: Int? = null) {
+enum class Race(@StringRes val titleRes: Int? = null, val tradition: Boolean = false) {
     /**
      * 海盗
      */
-    Pirate(R.string.module_pirate),
+    Pirate(R.string.module_pirate, true),
 
     /**
      * 机械
      */
-    Mechanical(R.string.module_mechanical),
+    Mechanical(R.string.module_mechanical, true),
 
     /**
      * 龙
      */
-    Dragon(R.string.module_dragon),
+    Dragon(R.string.module_dragon, true),
 
     /**
      * 野兽
      */
-    Beast(R.string.module_beast),
+    Beast(R.string.module_beast, true),
 
     /**
      * 鱼人
      */
-    Murloc(R.string.module_murloc),
+    Murloc(R.string.module_murloc, true),
 
     /**
      * 恶魔
      */
-    Demon(R.string.module_demon),
+    Demon(R.string.module_demon, true),
 
     /**
      * 图腾
      */
-    Totem(R.string.module_totem),
+    Totem(R.string.module_totem, true),
 
     /**
      * 元素
      */
-    Elemental(R.string.module_elemental),
+    Elemental(R.string.module_elemental, true),
 
 
-    Naga(R.string.module_naga),
+    /**
+     * 娜迦
+     */
+    Naga(R.string.module_naga, true),
 
 
     /**

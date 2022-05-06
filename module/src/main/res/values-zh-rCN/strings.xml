@@ -127,4 +127,9 @@
     <string name="module_opponent_class">对手职业</string>
     <string name="module_times">场数</string>
     <string name="module_win_rate">胜率</string>
+    <string name="module_deck_battle_detail">卡组对战明细</string>
+    <string name="module_cost">费用</string>
+    <string name="module_attack">攻击力</string>
+    <string name="module_record">记录</string>
+    <string name="module_deck_detail">卡组详情</string>
 </resources>
