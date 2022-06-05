@@ -3,9 +3,9 @@ package com.ke.hs_tracker.module.entity
 object EnumMoshiAdapter {
 
 
-    fun <T : Enum<T>> fromJson(value: String, enumList: Array<T>): T {
+    fun <T : Enum<T>> fromJson(value: String, enumList: Array<T>, fallback: T? = null): T {
         val enum = enumList
-            .find { it.name.equals(value.replace("_", ""), true) }
+            .find { it.name.equals(value.replace("_", ""), true) } ?: fallback
 
         if (enum == null) {
             throw IllegalArgumentException("错误的 $value 类型")

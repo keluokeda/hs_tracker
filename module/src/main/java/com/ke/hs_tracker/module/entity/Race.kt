@@ -56,6 +56,9 @@ enum class Race(@StringRes val titleRes: Int? = null, val tradition: Boolean = f
     Naga(R.string.module_naga, true),
 
 
+    Error,
+
+
     /**
      * 野猪人
      */
@@ -94,6 +97,8 @@ enum class Race(@StringRes val titleRes: Int? = null, val tradition: Boolean = f
 
     Bloodelf,
 
+    OldGod,
+
     /**
      * 亡灵
      */
@@ -131,7 +136,7 @@ class RaceAdapter {
 
     @FromJson
     fun fromJson(value: String): Race {
-        return EnumMoshiAdapter.fromJson(value, Race.values())
+        return EnumMoshiAdapter.fromJson(value, Race.values(), Race.Error)
     }
 
     @ToJson

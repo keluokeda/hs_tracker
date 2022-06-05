@@ -105,6 +105,7 @@ class ZoneEventsViewModel @Inject constructor(
                     val first = list[0]
                     val second = list[1]
 
+
                     mutableList.add(last.update(first.plus(second), allCardList))
                 }
                 3 -> {

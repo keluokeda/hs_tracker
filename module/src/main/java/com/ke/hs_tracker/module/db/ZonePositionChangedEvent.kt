@@ -23,9 +23,9 @@ data class ZonePositionChangedEvent(
     @ColumnInfo(name = "is_user")
     var isUser: Boolean = false,
     @ColumnInfo(name = "current_zone")
-    val currentZone: Zone,
+    var currentZone: Zone,
     @ColumnInfo(name = "new_zone")
-    val newZone: Zone,
+    var newZone: Zone,
     @ColumnInfo(name = "current_position")
     val currentPosition: Int,
     @ColumnInfo(name = "new_position")
@@ -38,6 +38,14 @@ data class ZonePositionChangedEvent(
         if (event.entityId != entityId) {
             throw RuntimeException("两个要进行加的 entity id 不一致 $event")
         }
+
+        if (currentZone == Zone.Deck && newZone == Zone.Deck && newPosition != 0) {
+            //星界导致插入一张卡牌到事件中
+            currentZone = event.newZone
+            newZone = event.newZone
+        }
+
+
         if (currentZone != event.currentZone) {
             throw RuntimeException("两个要进行加的 zone 不一致  $event")
         }
