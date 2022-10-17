@@ -10,6 +10,11 @@ import com.squareup.moshi.ToJson
 enum class Mechanics {
 
     /**
+     * 注能
+     */
+    Infuse,
+
+    /**
      * 过载
      */
     Overload,
@@ -18,7 +23,7 @@ enum class Mechanics {
     /**
      * 战吼
      */
-    Battlecry,
+    BattleCry,
 
     /**
      * 光环
@@ -73,14 +78,14 @@ enum class Mechanics {
     /**
      * 亡语
      */
-    Deathrattle,
+    DeathRattle,
 
     /**
      * 秘密选择
      */
     Counter,
 
-    InvisibleDeathrattle,
+    InvisibleDeathRattle,
 
     /**
      * 变形
