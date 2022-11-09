@@ -133,5 +133,6 @@
     <string name="module_attack">Attack</string>
     <string name="module_record">Records</string>
     <string name="module_deck_detail">Deck Detail</string>
+    <string name="module_opponent_hand_card">Opponent hand card</string>
 
 </resources>

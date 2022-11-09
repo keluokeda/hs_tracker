@@ -6,7 +6,6 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ke.hs_tracker.module.db.*
-
 import com.ke.hs_tracker.module.di.IoDispatcher
 import com.ke.hs_tracker.module.domain.GetAllCardUseCase
 import com.ke.hs_tracker.module.domain.GetRealLogDirUseCase
@@ -23,6 +22,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.InputStream
+import java.util.*
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
@@ -40,12 +40,15 @@ class MainViewModel @Inject constructor(
     private var user: PowerTag.GameState.PlayerMapping? = null
     private var opponent: PowerTag.GameState.PlayerMapping? = null
 
+    private var currentTurn = 0
+
 //    private var logsDir: DocumentFile? = null
 
     private suspend fun getLogsDir(): DocumentFile? {
         return getLogDirUseCase(Unit).successOr(null)
 //        return context.findHSDataFilesDir("Logs")
     }
+
 
     private val _title = MutableStateFlow("标题")
 
@@ -62,6 +65,21 @@ class MainViewModel @Inject constructor(
 
     val graveyardCardList: StateFlow<List<GraveyardCard>>
         get() = _graveyardCardList
+
+
+    /**
+     * 对手手牌
+     */
+    private val currentOpponentHandCards = mutableListOf<OpponentHandCard>()
+
+    private val _opponentHandCards =
+        MutableStateFlow<Pair<String, List<OpponentHandCard>>>("" to emptyList())
+
+    /**
+     * 对手手牌
+     */
+    val opponentHandCards: StateFlow<Pair<String, List<OpponentHandCard>>>
+        get() = _opponentHandCards
 
     private val userGraveyardCardList = mutableListOf<GraveyardCard>()
 
@@ -229,9 +247,7 @@ class MainViewModel @Inject constructor(
             }
             is PowerTag.PowerTaskList.CreateGame -> {
                 //初始化卡牌
-                "游戏开始了".log()
-                _deckLeftCardList.value = deckCardList
-                game.startTime = System.currentTimeMillis()
+                onGameStarted()
             }
             is PowerTag.PowerTaskList.FullEntity -> {
 //                handleFullEntity(tag)
@@ -347,11 +363,63 @@ class MainViewModel @Inject constructor(
 
                 } else if (it.currentZone == Zone.Play && it.newZone == Zone.Graveyard) {
                     onGraveyardCardsChanged(cardId, it.isUser)
+                } else if (it.newZone == Zone.Hand || it.currentZone == Zone.Hand) {
+                    //手牌
+                    if (!it.isUser) {
+                        handleOpponentHandChanged(it)
+
+                    }
                 }
             }
         }
 
 
+    }
+
+    private var lastZonePositionChangedEvent: ZonePositionChangedEvent? = null
+
+    /**
+     * 对手手牌发生变化
+     */
+    private fun handleOpponentHandChanged(event: ZonePositionChangedEvent) {
+
+        if (lastZonePositionChangedEvent?.entityId == event.entityId && event.currentZone == event.newZone) {
+            return
+        }
+
+        if (event.newZone == Zone.Hand) {
+            //有卡牌入手 可能从牌库抽到手里 也可能改变了位置
+
+            val target = currentOpponentHandCards.firstOrNull {
+                it.entityId == event.entityId
+            }
+            if (target == null) {
+                //插入一张卡牌到list中
+                currentOpponentHandCards.add(
+                    OpponentHandCard(
+                        currentTurn, event.entityId, event.newPosition
+                    )
+                )
+            } else {
+                target.position = event.newPosition
+            }
+        } else if (event.currentZone == Zone.Hand) {
+            //手牌出去了一张
+
+            val target = currentOpponentHandCards.firstOrNull {
+                it.entityId == event.entityId
+            }
+            if (target == null) {
+                //
+            } else {
+//                target.position = event.newPosition
+                currentOpponentHandCards.remove(target)
+            }
+        }
+        lastZonePositionChangedEvent = event
+        _opponentHandCards.value = UUID.randomUUID().toString() to currentOpponentHandCards
+
+        "对手手牌发生了变化 $event ,当前回合是 $currentTurn , 对手手牌 $currentOpponentHandCards".log()
     }
 
 
@@ -369,6 +437,10 @@ class MainViewModel @Inject constructor(
     }
 
     private fun handleTagChange(tagChange: PowerTag.PowerTaskList.TagChange) {
+
+        tagChange.isTurnChanged()?.apply {
+            currentTurn = this
+        }
 
         if (tagChange.entity.player == user?.id && tagChange.entity.zone == Zone.Hand && tagChange.tag == "ZONE" && tagChange.value == "DECK") {
             //TAG_CHANGE Entity=[entityName=冷风 id=15 zone=HAND zonePos=3 cardId=AV_266 player=1] tag=ZONE value=DECK
@@ -401,6 +473,18 @@ class MainViewModel @Inject constructor(
 
     }
 
+    /**
+     * 游戏开始
+     */
+    private fun onGameStarted() {
+        "游戏开始了".log()
+        _deckLeftCardList.value = deckCardList
+        game.startTime = System.currentTimeMillis()
+        currentTurn = 0
+
+        currentOpponentHandCards.clear()
+        _opponentHandCards.value = UUID.randomUUID().toString() to currentOpponentHandCards
+    }
 
     private fun onGameOver() {
         viewModelScope.launch {
@@ -433,6 +517,8 @@ class MainViewModel @Inject constructor(
         userGraveyardCardList.clear()
         opponentGraveyardCardList.clear()
         _graveyardCardList.value = emptyList()
+        currentTurn = 0
+        _opponentHandCards.value = UUID.randomUUID().toString() to emptyList()
     }
 
 
@@ -612,3 +698,23 @@ class MainViewModel @Inject constructor(
 }
 
 private const val powerFileName = "Power.log"
+
+data class OpponentHandCard(
+    /**
+     * 回合数
+     */
+    val turn: Int,
+    /**
+     * 实体id
+     */
+    val entityId: Int,
+    /**
+     * 位置
+     */
+    var position: Int,
+
+    /**
+     * 时间
+     */
+    val time: Long = System.currentTimeMillis()
+)

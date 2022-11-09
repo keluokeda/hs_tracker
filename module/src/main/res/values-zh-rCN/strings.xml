@@ -132,4 +132,5 @@
     <string name="module_attack">攻击力</string>
     <string name="module_record">记录</string>
     <string name="module_deck_detail">卡组详情</string>
+    <string name="module_opponent_hand_card">对手手牌</string>
 </resources>

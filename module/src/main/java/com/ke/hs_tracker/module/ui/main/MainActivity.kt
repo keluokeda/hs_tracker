@@ -1,8 +1,6 @@
 package com.ke.hs_tracker.module.ui.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleActivityMainBinding
-import com.ke.hs_tracker.module.ui.settings.SettingsActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -58,12 +55,14 @@ class MainActivity : AppCompatActivity() {
         val titleList = listOf(
             R.string.module_deck,
             R.string.module_graveyard,
+            R.string.module_opponent_hand_card
 //            R.string.module_opponent_graveyard
         )
 
-        val fragmentList = listOf<Fragment>(
+        val fragmentList = listOf(
             DeckCardListFragment(),
-            GraveyardFragment()
+            GraveyardFragment(),
+            OpponentHandCardsFragment()
 //            UserGraveyardFragment(),
 //            OpponentGraveyardFragment()
         )
@@ -79,6 +78,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         binding.viewPager.adapter = adapter
+        binding.viewPager.offscreenPageLimit = fragmentList.size
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, index ->
             tab.setText(titleList[index])
