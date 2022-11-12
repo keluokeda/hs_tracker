@@ -14,6 +14,8 @@ interface PreferenceStorage {
      * 保存日志文件
      */
     var saveLogFile: Boolean
+
+    var floatingEnable: Boolean
 }
 
 class PreferenceStorageImpl @Inject constructor(
@@ -40,8 +42,15 @@ class PreferenceStorageImpl @Inject constructor(
             mmkv.encode(KEY_SAVE_LOG_FILE, value)
         }
 
+    override var floatingEnable: Boolean
+        get() = mmkv.getBoolean(KEY_FLOATING_ENABLE, true)
+        set(value) {
+            mmkv.putBoolean(KEY_FLOATING_ENABLE, value)
+        }
+
     companion object {
         private const val KEY_THEME = "KEY_THEME"
         private const val KEY_SAVE_LOG_FILE = "KEY_SAVE_LOG_FILE"
+        private const val KEY_FLOATING_ENABLE = "KEY_FLOATING_ENABLE"
     }
 }

@@ -2,15 +2,9 @@ package com.ke.hs_tracker.module.ui.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.res.ResourcesCompat
-import com.bumptech.glide.Glide
-import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.bindCard
-import com.ke.hs_tracker.module.databinding.ModuleDialogCardPreviewBinding
 import com.ke.hs_tracker.module.databinding.ModuleItemCardBinding
 import com.ke.hs_tracker.module.entity.CardBean
-import com.ke.hs_tracker.module.showCardImageDialog
 import com.ke.mvvm.base.ui.BaseViewBindingAdapter
 
 class CardAdapter : BaseViewBindingAdapter<CardBean, ModuleItemCardBinding>() {
@@ -18,9 +12,9 @@ class CardAdapter : BaseViewBindingAdapter<CardBean, ModuleItemCardBinding>() {
 
     init {
         setOnItemClickListener { _, _, position ->
-            val item = getItem(position)
+//            val item = getItem(position)
 
-            showCardImageDialog(context,item.card.id)
+//            showCardImageDialog(context,item.card.id)
 //            val binding = ModuleDialogCardPreviewBinding.inflate(LayoutInflater.from(context))
 //            AlertDialog.Builder(context)
 //                .show().apply {

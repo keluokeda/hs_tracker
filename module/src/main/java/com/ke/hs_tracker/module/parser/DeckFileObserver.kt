@@ -11,14 +11,14 @@ import java.io.InputStream
 /**
  * deck文件观察者
  */
-class DeckFileObserver(
+class DeckFileObserver constructor(
     private val interval: Long = 2000,
     private val deckFileInputStreamProvider: suspend () -> InputStream?,
 ) {
     private var oldLogSize = 0L
 
 
-    fun reset(){
+    fun reset() {
         oldLogSize = 0
     }
 

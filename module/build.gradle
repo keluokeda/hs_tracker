@@ -96,4 +96,7 @@ dependencies {
 
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // optional - helpers for implementing LifecycleOwner in a Service
+    implementation "androidx.lifecycle:lifecycle-service:2.5.1"
 }

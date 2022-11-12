@@ -4,6 +4,7 @@ import com.ke.hs_tracker.module.entity.Entity
 import com.ke.hs_tracker.module.entity.InsertStackResult
 import com.ke.hs_tracker.module.entity.LogType
 import com.ke.hs_tracker.module.entity.PowerTag
+import javax.inject.Inject
 
 
 /**
@@ -21,7 +22,7 @@ interface PowerParser {
     var powerTagListener: ((PowerTag) -> Unit)?
 }
 
-class PowerParserImpl : PowerParser {
+class PowerParserImpl @Inject constructor() : PowerParser {
 
     private val blockTagStack: BlockTagStack = BlockTagStackImpl()
 

@@ -46,7 +46,6 @@ class MainViewModel @Inject constructor(
 
     private suspend fun getLogsDir(): DocumentFile? {
         return getLogDirUseCase(Unit).successOr(null)
-//        return context.findHSDataFilesDir("Logs")
     }
 
 
@@ -489,7 +488,6 @@ class MainViewModel @Inject constructor(
     private fun onGameOver() {
         viewModelScope.launch {
             //保存游戏
-
             game.endTime = System.currentTimeMillis()
             gameDao.insert(game)
             zonePositionChangedEventDao.insertAll(zoneChangedEventList.map {
@@ -662,22 +660,19 @@ class MainViewModel @Inject constructor(
     }
 
     companion object {
-        private fun updateCardList(
-            card: Card,
-            mutableStateFlow: MutableStateFlow<List<CardBean>>,
-            insert: Boolean,
-        ) {
-            if (card.type == CardType.Enchantment) {
-                return
+         fun updateCardList(
+             card: Card,
+             mutableStateFlow: MutableStateFlow<List<CardBean>>,
+             insert: Boolean,
+         ) {
+             if (card.type == CardType.Enchantment) {
+                 return
+             }
+             val list = mutableStateFlow.value.toMutableList()
+             val bean = list.find {
+                 it.card.id == card.id
             }
-            val list = mutableStateFlow.value.toMutableList()
-            val bean = list.find {
-                it.card.id == card.id
-            }
-//            if (bean?.card?.type == CardType.Enchantment) {
-//                //忽略衍生牌
-//                return@withContext
-//            }
+
             if (bean == null) {
                 list.add(CardBean(card, 1))
             } else {
@@ -697,7 +692,7 @@ class MainViewModel @Inject constructor(
     }
 }
 
-private const val powerFileName = "Power.log"
+const val powerFileName = "Power.log"
 
 data class OpponentHandCard(
     /**

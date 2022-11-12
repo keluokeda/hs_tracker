@@ -1,11 +1,13 @@
 package com.ke.hs_tracker.module.ui.settings
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.CompoundButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.ke.hs_tracker.module.R
+import com.ke.hs_tracker.module.data.PreferenceStorage
 import com.ke.hs_tracker.module.databinding.ModuleActivitySettingsBinding
 import com.ke.hs_tracker.module.ui.deck.DeckCodeParserActivity
 import com.ke.hs_tracker.module.ui.migrate.MigrateMainActivity
@@ -16,17 +18,26 @@ import com.ke.hs_tracker.module.ui.writeconfig.WriteConfigActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
     private lateinit var binding: ModuleActivitySettingsBinding
     private val settingsViewModel: SettingsViewModel by viewModels()
 
+    @Inject
+    lateinit var preferenceStorage: PreferenceStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ModuleActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.floating.isChecked = preferenceStorage.floatingEnable
+
+        binding.floating.setOnCheckedChangeListener { _, isChecked ->
+            preferenceStorage.floatingEnable = isChecked
+        }
 
 
         launchAndRepeatWithViewLifecycle {
@@ -84,6 +95,11 @@ class SettingsActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
             startActivity(Intent.createChooser(intent, "Send To"))
         }
 
+        binding.llSource.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(getString(R.string.module_github_address))
+            startActivity(intent)
+        }
     }
 
     override fun onCheckedChanged(p0: CompoundButton, checked: Boolean) {

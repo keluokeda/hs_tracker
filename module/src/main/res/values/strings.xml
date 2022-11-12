@@ -134,5 +134,10 @@
     <string name="module_record">Records</string>
     <string name="module_deck_detail">Deck Detail</string>
     <string name="module_opponent_hand_card">Opponent hand card</string>
+    <string name="module_tracker_style">Tracker Style</string>
 
+    <string name="module_small_window">Small Window</string>
+    <string name="module_floating_window">Floating Window</string>
+    <string name="module_floating_track">Floating Window</string>
+    <string name="module_github_address">https://github.com/keluokeda/hs_tracker</string>
 </resources>
