@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#33000000"
     android:orientation="vertical">
 
 
@@ -19,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
         android:id="@+id/zoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         android:padding="8dp"
-        android:src="@drawable/module_baseline_zoom_out_map_white_24dp" />
+        android:src="@drawable/module_baseline_zoom_out_map_white_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
 
     <ImageView
         android:id="@+id/close"
@@ -34,17 +35,26 @@
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         android:padding="8dp"
+        android:src="@drawable/module_baseline_clear_red_500_24dp"
         app:layout_constraintStart_toEndOf="@id/zoom"
-        app:layout_constraintTop_toTopOf="@id/zoom"
-        android:src="@drawable/module_baseline_clear_red_500_24dp" />
+        app:layout_constraintTop_toTopOf="@id/zoom" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@id/close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/close" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/zoom"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/zoom"
         tools:listitem="@layout/module_item_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

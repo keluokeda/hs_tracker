@@ -7,7 +7,7 @@ import com.ke.hs_tracker.module.db.Game
  */
 sealed interface GameEvent {
 
-    object None : GameEvent
+
 
 
     /**
@@ -36,4 +36,9 @@ sealed interface GameEvent {
     data class RemoveCardFromUserDeck(
         val cardId: String
     ) : GameEvent
+
+    /**
+     * 插入一张卡牌到墓地
+     */
+    data class InsertCardToGraveyard(val cardId: String, val isUser: Boolean) : GameEvent
 }

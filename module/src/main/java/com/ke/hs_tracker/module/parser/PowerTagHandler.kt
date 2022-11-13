@@ -22,7 +22,7 @@ interface PowerTagHandler {
     /**
      * 游戏事件流
      */
-    val gameEventFlow: Flow<GameEvent>
+    val gameEventFlow: Flow<GameEvent?>
 }
 
 class PowerTagHandlerImpl @Inject constructor(
@@ -31,9 +31,9 @@ class PowerTagHandlerImpl @Inject constructor(
 
     private val _gameEventFlow =
 //        Channel<GameEvent>(capacity = Channel.UNLIMITED)
-        MutableStateFlow<GameEvent>(GameEvent.None)
+        MutableStateFlow<GameEvent?>(null)
 
-    override val gameEventFlow: Flow<GameEvent>
+    override val gameEventFlow: Flow<GameEvent?>
         get() = _gameEventFlow
 
 
@@ -227,7 +227,7 @@ class PowerTagHandlerImpl @Inject constructor(
                         insertCardToDeck(cardId)
 
                 } else if (it.currentZone == Zone.Play && it.newZone == Zone.Graveyard) {
-//                    onGraveyardCardsChanged(cardId, it.isUser)
+                    onGraveyardCardsChanged(cardId, it.isUser)
                 } else if (it.newZone == Zone.Hand || it.currentZone == Zone.Hand) {
                     //手牌
                     if (!it.isUser) {
@@ -239,6 +239,13 @@ class PowerTagHandlerImpl @Inject constructor(
         }
 
 
+    }
+
+    private fun onGraveyardCardsChanged(cardId: String?, user: Boolean) {
+        if (cardId == null) {
+            return
+        }
+        _gameEventFlow.value = GameEvent.InsertCardToGraveyard(cardId, user)
     }
 
 

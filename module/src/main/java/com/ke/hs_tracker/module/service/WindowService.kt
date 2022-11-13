@@ -5,11 +5,15 @@ import android.os.Build
 import android.os.IBinder
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.view.WindowManager
-import androidx.core.view.isVisible
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import com.ke.hs_tracker.module.R
 import com.ke.hs_tracker.module.databinding.ModuleFloatingWindowBinding
 import com.ke.hs_tracker.module.log
 import com.ke.hs_tracker.module.parser.DeckCardObserver
@@ -32,8 +36,11 @@ class WindowService : LifecycleService() {
         ModuleFloatingWindowBinding.inflate(layoutInflater)
     }
 
-    private val adapter = CardAdapter()
+    private val deckAdapter = CardAdapter()
 
+    private val graveyardAdapter = CardAdapter()
+
+    private val opponentGraveyardAdapter = CardAdapter()
 
     @Inject
     lateinit var deckCardObserver: DeckCardObserver
@@ -58,16 +65,49 @@ class WindowService : LifecycleService() {
 
         windowManager.addView(binding.root, layoutParams)
 
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = deckAdapter
 
-        binding.zoom.setOnClickListener {
-            binding.recyclerView.isVisible = !binding.recyclerView.isVisible
-        }
+//        binding.zoom.setOnClickListener {
+//            binding.recyclerView.isVisible = !binding.recyclerView.isVisible
+//        }
 
         binding.close.setOnClickListener {
             windowManager.removeView(binding.root)
             stopSelf()
         }
+
+        binding.spinner.adapter = ArrayAdapter.createFromResource(
+            applicationContext,
+            R.array.module_spinner,
+            android.R.layout.simple_list_item_1
+        )
+        binding.spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                when (position) {
+                    0 -> {
+                        binding.recyclerView.adapter = deckAdapter
+                    }
+                    1 -> {
+                        binding.recyclerView.adapter = graveyardAdapter
+                    }
+                    2 -> {
+                        binding.recyclerView.adapter = opponentGraveyardAdapter
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
+
+        binding.spinner.setSelection(0)
 
         binding.root.setOnTouchListener(
             ItemViewTouchListener(
@@ -89,10 +129,21 @@ class WindowService : LifecycleService() {
         lifecycleScope.launch {
             deckCardObserver.deckCardList.collect {
 //                adapter.setList(it)
-                adapter.setDiffNewData(it.toMutableList())
+                deckAdapter.setDiffNewData(it.toMutableList())
             }
         }
 
+        lifecycleScope.launch {
+            deckCardObserver.userGraveyardCardList.collect {
+                graveyardAdapter.setDiffNewData(it.toMutableList())
+            }
+        }
+
+        lifecycleScope.launch {
+            deckCardObserver.opponentGraveyardCardList.collect {
+                opponentGraveyardAdapter.setDiffNewData(it.toMutableList())
+            }
+        }
 
     }
 

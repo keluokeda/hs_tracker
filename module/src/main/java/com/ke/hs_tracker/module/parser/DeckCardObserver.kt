@@ -26,6 +26,16 @@ interface DeckCardObserver {
     val deckCardList: StateFlow<List<CardBean>>
 
     /**
+     * 自己的墓地
+     */
+    val userGraveyardCardList: StateFlow<List<CardBean>>
+
+    /**
+     * 对手的墓地
+     */
+    val opponentGraveyardCardList: StateFlow<List<CardBean>>
+
+    /**
      * 初始化
      */
     fun init(scope: CoroutineScope)
@@ -59,6 +69,15 @@ class DeckCardObserverImpl @Inject constructor(
     override val deckCardList: StateFlow<List<CardBean>>
         get() = _deckCardList
 
+    private val _userGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
+
+    override val userGraveyardCardList: StateFlow<List<CardBean>>
+        get() = _userGraveyardCardList
+
+    private val _opponentGraveyardCardList = MutableStateFlow<List<CardBean>>(emptyList())
+    override val opponentGraveyardCardList: StateFlow<List<CardBean>>
+        get() = _opponentGraveyardCardList
+
     /**
      * 所有卡牌
      */
@@ -73,21 +92,7 @@ class DeckCardObserverImpl @Inject constructor(
      * 当前卡组剩余的卡牌
      */
     private var deckLeftCardList: List<CardBean> = listOf()
-        set(value) {
-//            "设置了剩余卡牌 ${
-//                value.map {
-//                    it.count
-//                }.reduce { acc, i ->
-//                    acc + i
-//                }
-//            }".log()
-            var count = 0
-            value.forEach {
-                count += it.count
-            }
-            "设置了剩余卡牌 $count".log()
-            field = value
-        }
+
 
     /**
      * 获取炉石log文件夹
@@ -152,21 +157,21 @@ class DeckCardObserverImpl @Inject constructor(
         scope.launch {
             powerTagHandler.gameEventFlow.collect {
                 when (it) {
+                    null -> {
 
+                    }
 
                     is GameEvent.OnGameOver -> {
 
+                        _userGraveyardCardList.value = emptyList()
+                        _opponentGraveyardCardList.value = emptyList()
 
                         clearPowerLogFile()
-                        "清空卡牌 OnGameOver ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size} , _deckCardList = ${_deckCardList.value.size}".log()
 
-//                        deckLeftCardList.clear()
-//                        deckLeftCardList.addAll(currentDeckList)
                         deckLeftCardList = currentDeckList.toList()
                         _deckCardList.value = deckLeftCardList.toList()
 //                        _deckCardList.send(deckLeftCardList)
 
-                        "清空卡牌 OnGameOver ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size} , _deckCardList = ${_deckCardList.value.size}".log()
 
                         it.game.apply {
                             userDeckCode = currentUserDeck?.code ?: ""
@@ -176,6 +181,9 @@ class DeckCardObserverImpl @Inject constructor(
                         powerFileObserver.reset()
                     }
                     GameEvent.OnGameStart -> {
+
+                        _userGraveyardCardList.value = emptyList()
+                        _opponentGraveyardCardList.value = emptyList()
 //                        deckLeftCardList = currentDeckList
                         "清空卡牌 OnGameStart ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size}".log()
 //                        deckLeftCardList.clear()
@@ -192,8 +200,9 @@ class DeckCardObserverImpl @Inject constructor(
                     is GameEvent.InsertCardToUserDeck -> {
                         onUserDeckCardListChanged(it.cardId, false)
                     }
-                    GameEvent.None -> {
 
+                    is GameEvent.InsertCardToGraveyard -> {
+                        onGraveyardCardsChanged(it.cardId, it.isUser)
                     }
                 }
             }
@@ -215,6 +224,34 @@ class DeckCardObserverImpl @Inject constructor(
                     }
                 }
         }
+
+    }
+
+    private fun onGraveyardCardsChanged(cardId: String, isUser: Boolean) {
+
+        //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=106 zone=PLAY zonePos=0 cardId= player=1] tag=ZONE value=GRAVEYARD
+        //TAG_CHANGE Entity=[entityName=UNKNOWN ENTITY [cardType=INVALID] id=5 zone=SECRET zonePos=0 cardId= player=1] tag=COST value=2
+        //如果对面打出一张奥秘拍 会直接进入墓地
+//            ?: throw RuntimeException("没有id $entity")
+
+        val card = allCards.find {
+            it.id == cardId
+        } ?: return
+
+        if (card.type == CardType.Enchantment) {
+//            "衍生牌 $card 不能放到墓地去".log()
+            return
+        }
+
+//        "插入一张牌到墓地 $card $entity".log()
+
+        //TAG_CHANGE Entity=[entityName=破霰元素 id=62 zone=PLAY zonePos=1 cardId=AV_260 player=2] tag=ZONE value=GRAVEYARD
+        if (isUser) {
+            _userGraveyardCardList.value += CardBean(card, 1)
+        } else {
+            _opponentGraveyardCardList.value += CardBean(card, 1)
+        }
+
 
     }
 

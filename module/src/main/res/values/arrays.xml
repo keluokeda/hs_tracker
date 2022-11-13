@@ -7,4 +7,11 @@
         <item>时间正序</item>
         <item>时间倒序</item>
     </string-array>
+
+    <string-array name="module_spinner">
+        <item>@string/module_deck</item>
+        <item>@string/module_graveyard</item>
+        <item>@string/module_opponent_graveyard</item>
+
+    </string-array>
 </resources>
