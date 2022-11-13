@@ -20,11 +20,15 @@ interface PowerParser {
      * 解析结果监听
      */
     var powerTagListener: ((PowerTag) -> Unit)?
+
+
 }
 
-class PowerParserImpl @Inject constructor() : PowerParser {
+class PowerParserImpl @Inject constructor(
+    private val blockTagStack: BlockTagStack
+) : PowerParser {
 
-    private val blockTagStack: BlockTagStack = BlockTagStackImpl()
+//    private val blockTagStack: BlockTagStack = BlockTagStackImpl()
 
 
     override var powerTagListener: ((PowerTag) -> Unit)? = null
@@ -65,8 +69,7 @@ class PowerParserImpl @Inject constructor() : PowerParser {
 
     private fun handlePowerTaskListLog(line: String) {
 
-        val result = blockTagStack.insert(line)
-        when (result) {
+        when (val result = blockTagStack.insert(line)) {
             InsertStackResult.CanNotInsert -> {
                 handleUnSupportNestedTag(line)
             }

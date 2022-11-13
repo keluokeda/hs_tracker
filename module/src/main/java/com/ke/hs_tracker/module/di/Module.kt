@@ -7,6 +7,7 @@ import com.ke.hs_tracker.module.data.PreferenceStorage
 import com.ke.hs_tracker.module.data.PreferenceStorageImpl
 import com.ke.hs_tracker.module.db.*
 import com.ke.hs_tracker.module.entity.*
+import com.ke.hs_tracker.module.parser.*
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -80,7 +81,6 @@ class Module {
     fun provideGameDao(database: Database): GameDao = database.gameDao()
 
 
-
     @Provides
     fun provideZonePositionChangedEventDao(database: Database): ZonePositionChangedEventDao =
         database.zonePositionChangedEventDao()
@@ -91,5 +91,21 @@ class Module {
         return preferenceStorageImpl
     }
 
+    @Provides
+    fun provideBlockTagStack(impl: BlockTagStackImpl): BlockTagStack {
+        return impl
+    }
 
+    @Provides
+    fun providePowerParser(powerParserImpl: PowerParserImpl): PowerParser {
+        return powerParserImpl
+    }
+
+    @Provides
+    fun providePowerTagHandler(powerTagHandlerImpl: PowerTagHandlerImpl): PowerTagHandler =
+        powerTagHandlerImpl
+
+    @Provides
+    fun provideDeckCardObserver(deckCardObserverImpl: DeckCardObserverImpl): DeckCardObserver =
+        deckCardObserverImpl
 }

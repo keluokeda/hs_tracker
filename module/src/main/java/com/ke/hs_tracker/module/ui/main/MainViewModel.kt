@@ -15,7 +15,7 @@ import com.ke.hs_tracker.module.entity.*
 import com.ke.hs_tracker.module.log
 import com.ke.hs_tracker.module.parser.DeckFileObserver
 import com.ke.hs_tracker.module.parser.PowerFileObserver
-import com.ke.hs_tracker.module.parser.PowerParserImpl
+import com.ke.hs_tracker.module.parser.PowerParser
 import com.ke.mvvm.base.data.successOr
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -35,7 +35,8 @@ class MainViewModel @Inject constructor(
     private val getLogDirUseCase: GetRealLogDirUseCase,
     private val gameDao: GameDao,
     private val zonePositionChangedEventDao: ZonePositionChangedEventDao,
-    private val saveLogFileUseCase: SaveLogFileUseCase
+    private val saveLogFileUseCase: SaveLogFileUseCase,
+    private val powerParser: PowerParser
 ) : ViewModel() {
     private var user: PowerTag.GameState.PlayerMapping? = null
     private var opponent: PowerTag.GameState.PlayerMapping? = null
@@ -145,7 +146,7 @@ class MainViewModel @Inject constructor(
     private var game: Game = Game()
 
 
-    private val powerParser = PowerParserImpl()
+//    private val powerParser = PowerParserImpl()
 
 
     private var allCard: List<Card> = emptyList()
@@ -172,6 +173,11 @@ class MainViewModel @Inject constructor(
         }
 
 
+//        viewModelScope.launch {
+//            powerParser.powerTagFlow.collect {
+//                handlePowerTag(it)
+//            }
+//        }
 
         powerParser.powerTagListener = {
             handlePowerTag(it)
@@ -660,17 +666,17 @@ class MainViewModel @Inject constructor(
     }
 
     companion object {
-         fun updateCardList(
-             card: Card,
-             mutableStateFlow: MutableStateFlow<List<CardBean>>,
-             insert: Boolean,
-         ) {
-             if (card.type == CardType.Enchantment) {
-                 return
-             }
-             val list = mutableStateFlow.value.toMutableList()
-             val bean = list.find {
-                 it.card.id == card.id
+        fun updateCardList(
+            card: Card,
+            mutableStateFlow: MutableStateFlow<List<CardBean>>,
+            insert: Boolean,
+        ) {
+            if (card.type == CardType.Enchantment) {
+                return
+            }
+            val list = mutableStateFlow.value.toMutableList()
+            val bean = list.find {
+                it.card.id == card.id
             }
 
             if (bean == null) {

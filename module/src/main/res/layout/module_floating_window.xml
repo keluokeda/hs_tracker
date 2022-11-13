@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="150dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <View
+        android:id="@+id/header"
+        android:layout_width="40dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="4dp"
+        android:background="#f0f"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        android:id="@+id/zoom"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:contentDescription="@null"
+        android:padding="8dp"
+        android:src="@drawable/module_baseline_zoom_out_map_white_24dp" />
 
-        <ImageView
-            android:id="@+id/zoom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:padding="8dp"
-            android:src="@drawable/module_baseline_zoom_out_map_white_24dp" />
-
-        <ImageView
-            android:id="@+id/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:padding="8dp"
-            android:src="@drawable/module_baseline_clear_red_500_24dp" />
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:padding="8dp"
+        app:layout_constraintStart_toEndOf="@id/zoom"
+        app:layout_constraintTop_toTopOf="@id/zoom"
+        android:src="@drawable/module_baseline_clear_red_500_24dp" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/zoom"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/module_item_card" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

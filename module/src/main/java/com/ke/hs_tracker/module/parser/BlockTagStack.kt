@@ -1,13 +1,8 @@
 package com.ke.hs_tracker.module.parser
 
 import com.ke.hs_tracker.module.entity.*
-import com.ke.hs_tracker.module.entity.NestedTag
-import com.ke.hs_tracker.module.entity.toBlockType
-import java.lang.Exception
 import java.util.*
-import kotlin.text.lowercase
-import kotlin.text.replace
-import kotlin.text.toInt
+import javax.inject.Inject
 
 
 interface BlockTagStack {
@@ -20,7 +15,7 @@ interface BlockTagStack {
 
 }
 
-internal class BlockTagStackImpl : BlockTagStack {
+class BlockTagStackImpl @Inject constructor() : BlockTagStack {
 
     private val nestedTagList = LinkedList<NestedTag>()
 
