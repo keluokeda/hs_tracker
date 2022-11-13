@@ -11,7 +11,6 @@ import com.ke.hs_tracker.module.ui.main.powerFileName
 import com.ke.mvvm.base.data.successOr
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import java.io.InputStream
 import javax.inject.Inject
@@ -24,7 +23,7 @@ interface DeckCardObserver {
     /**
      * 牌库的卡牌
      */
-    val deckCardList: Flow<List<CardBean>>
+    val deckCardList: StateFlow<List<CardBean>>
 
     /**
      * 初始化
@@ -41,18 +40,24 @@ class DeckCardObserverImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : DeckCardObserver {
 
+
+//    private val _userGraveyardCardList = MutableStateFlow<List<GraveyardCard>>(emptyList())
+//
+//   override val userGraveyardCardList: StateFlow<List<GraveyardCard>>
+//        get() = _userGraveyardCardList
+
     /**
      * 当前用户的卡组
      */
     private var currentUserDeck: CurrentDeck? = null
 
     private val _deckCardList =
-//        MutableStateFlow<List<CardBean>>(emptyList())
-        Channel<List<CardBean>>(capacity = Channel.CONFLATED)
+        MutableStateFlow<List<CardBean>>(emptyList())
+//        Channel<List<CardBean>>(capacity = Channel.CONFLATED)
 
 
-    override val deckCardList: Flow<List<CardBean>>
-        get() = _deckCardList.receiveAsFlow()
+    override val deckCardList: StateFlow<List<CardBean>>
+        get() = _deckCardList
 
     /**
      * 所有卡牌
@@ -67,8 +72,22 @@ class DeckCardObserverImpl @Inject constructor(
     /**
      * 当前卡组剩余的卡牌
      */
-    private val deckLeftCardList: MutableList<CardBean> = mutableListOf()
-
+    private var deckLeftCardList: List<CardBean> = listOf()
+        set(value) {
+//            "设置了剩余卡牌 ${
+//                value.map {
+//                    it.count
+//                }.reduce { acc, i ->
+//                    acc + i
+//                }
+//            }".log()
+            var count = 0
+            value.forEach {
+                count += it.count
+            }
+            "设置了剩余卡牌 $count".log()
+            field = value
+        }
 
     /**
      * 获取炉石log文件夹
@@ -95,7 +114,7 @@ class DeckCardObserverImpl @Inject constructor(
     override fun init(
         scope: CoroutineScope,
     ) {
-        val interval = 500L
+        val interval = 1500L
 
         scope.launch {
             clearPowerLogFile()
@@ -117,14 +136,17 @@ class DeckCardObserverImpl @Inject constructor(
         scope.launch {
             //监听牌库
             delay(1000)
-            deckFileObserver.start().map {
-                currentUserDeck = it
-                parseDeckCodeUseCase(it.code).successOr(emptyList())
-            }.collect {
-                currentDeckList = it
-//                _deckCardList.value = (it)
-                _deckCardList.send(it)
-            }
+            deckFileObserver
+                .start()
+                .flowOn(Dispatchers.IO)
+                .map {
+//                currentUserDeck = it
+                    parseDeckCodeUseCase(it.code).successOr(emptyList())
+                }.collect {
+                    currentDeckList = it
+                    _deckCardList.value = it.toList()
+//                _deckCardList.send(it)
+                }
         }
 
         scope.launch {
@@ -136,12 +158,15 @@ class DeckCardObserverImpl @Inject constructor(
 
 
                         clearPowerLogFile()
-                        "清空卡牌 OnGameOver".log()
+                        "清空卡牌 OnGameOver ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size} , _deckCardList = ${_deckCardList.value.size}".log()
 
-                        deckLeftCardList.clear()
-                        deckLeftCardList.addAll(currentDeckList)
-//                        _deckCardList.value = (deckLeftCardList)
-                        _deckCardList.send(deckLeftCardList)
+//                        deckLeftCardList.clear()
+//                        deckLeftCardList.addAll(currentDeckList)
+                        deckLeftCardList = currentDeckList.toList()
+                        _deckCardList.value = deckLeftCardList.toList()
+//                        _deckCardList.send(deckLeftCardList)
+
+                        "清空卡牌 OnGameOver ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size} , _deckCardList = ${_deckCardList.value.size}".log()
 
                         it.game.apply {
                             userDeckCode = currentUserDeck?.code ?: ""
@@ -152,11 +177,13 @@ class DeckCardObserverImpl @Inject constructor(
                     }
                     GameEvent.OnGameStart -> {
 //                        deckLeftCardList = currentDeckList
-                        "清空卡牌 OnGameStart".log()
-                        deckLeftCardList.clear()
-                        deckLeftCardList.addAll(currentDeckList)
-//                        _deckCardList.value = (deckLeftCardList)
-                        _deckCardList.send(deckLeftCardList)
+                        "清空卡牌 OnGameStart ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size}".log()
+//                        deckLeftCardList.clear()
+//                        deckLeftCardList.addAll(currentDeckList)
+                        deckLeftCardList = currentDeckList.toList()
+
+                        _deckCardList.value = deckLeftCardList.toList()
+//                        _deckCardList.send(deckLeftCardList)
                     }
                     is GameEvent.RemoveCardFromUserDeck -> {
                         onUserDeckCardListChanged(it.cardId, true)
@@ -179,7 +206,14 @@ class DeckCardObserverImpl @Inject constructor(
 
 
         scope.launch {
-            initPowerFileObserver(powerFileObserver)
+
+            powerFileObserver.start()
+                .flowOn(Dispatchers.IO)
+                .collect { list ->
+                    list.forEach {
+                        powerParser.parse(it)
+                    }
+                }
         }
 
     }
@@ -201,7 +235,7 @@ class DeckCardObserverImpl @Inject constructor(
     /**
      * 用户牌库的卡牌发生了变化
      */
-    private suspend fun onUserDeckCardListChanged(cardId: String, remove: Boolean) {
+    private fun onUserDeckCardListChanged(cardId: String, remove: Boolean) {
 
 
         val card = allCards.find {
@@ -214,45 +248,40 @@ class DeckCardObserverImpl @Inject constructor(
             return
         }
 
-        "牌库的卡牌发生了变化 $card $remove $deckLeftCardList".log()
+        "牌库的卡牌发生了变化 $card $remove ".log()
 
         val bean = deckLeftCardList.find {
             it.card.id == card.id
         }
 
+
+        val list = mutableListOf<CardBean>()
+        list.addAll(deckLeftCardList)
+
+
         if (bean == null) {
-            deckLeftCardList.add(CardBean(card, 1))
+            list.add(CardBean(card, 1))
         } else {
-            bean.count = if (remove) bean.count - 1 else bean.count + 1
+//            bean.count =
+            val newCount = if (remove) bean.count - 1 else bean.count + 1
+            list[deckLeftCardList.indexOf(bean)] = bean.updateCount(newCount)
         }
 
 //        if (bean?.count == 3) {
 //            "插入了3张进去？ ".log()
 //        }
 
-        val newList = deckLeftCardList.sortedBy {
+        val newList = list.sortedBy {
             it.card.cost
         }.filter {
             it.count > 0
         }
-        deckLeftCardList.clear()
-        deckLeftCardList.addAll(newList)
-//        _deckCardList.value = (deckLeftCardList)
-        _deckCardList.send(deckLeftCardList)
+//        deckLeftCardList.clear()
+//        deckLeftCardList.addAll(newList)
+        deckLeftCardList = newList
+        _deckCardList.value = deckLeftCardList.toList()
+//        _deckCardList.send(deckLeftCardList)
     }
 
 
-    private suspend fun initPowerFileObserver(
-        powerFileObserver: PowerFileObserver
-    ) {
-
-
-        powerFileObserver.start()
-            .flowOn(Dispatchers.IO)
-            .collect { list ->
-                list.forEach {
-                    powerParser.parse(it)
-                }
-            }
-    }
 }

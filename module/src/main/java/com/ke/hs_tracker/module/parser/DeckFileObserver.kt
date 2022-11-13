@@ -1,6 +1,7 @@
 package com.ke.hs_tracker.module.parser
 
 
+import android.os.Looper
 import com.ke.hs_tracker.module.entity.CurrentDeck
 import com.ke.hs_tracker.module.removeTime
 import kotlinx.coroutines.delay
@@ -23,6 +24,11 @@ class DeckFileObserver constructor(
     }
 
     suspend fun start(): Flow<CurrentDeck> = flow {
+
+        if (Thread.currentThread() == Looper.getMainLooper().thread) {
+            throw RuntimeException("不能运行在主线程")
+        }
+
         while (true) {
             deckFileInputStreamProvider()?.reader()?.apply {
                 if (oldLogSize > 0) {

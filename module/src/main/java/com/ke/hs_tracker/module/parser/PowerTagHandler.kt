@@ -29,7 +29,9 @@ class PowerTagHandlerImpl @Inject constructor(
 ) : PowerTagHandler {
 
 
-    private val _gameEventFlow = MutableStateFlow<GameEvent>(GameEvent.None)
+    private val _gameEventFlow =
+//        Channel<GameEvent>(capacity = Channel.UNLIMITED)
+        MutableStateFlow<GameEvent>(GameEvent.None)
 
     override val gameEventFlow: Flow<GameEvent>
         get() = _gameEventFlow
@@ -293,7 +295,7 @@ class PowerTagHandlerImpl @Inject constructor(
     private fun onGameOver() {
 //        _deckLeftCardList.value = deckCardList
         game.endTime = System.currentTimeMillis()
-        _gameEventFlow.value = (GameEvent.OnGameOver(game))
+        _gameEventFlow.value = GameEvent.OnGameOver(game)
     }
 
 

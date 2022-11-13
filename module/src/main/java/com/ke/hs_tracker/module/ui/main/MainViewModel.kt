@@ -186,6 +186,7 @@ class MainViewModel @Inject constructor(
             delay(1000)
             deckFileObserver
                 .start()
+                .flowOn(Dispatchers.IO)
                 .map {
                     it to parseDeckCodeUseCase(it.code).successOr(emptyList())
 
@@ -682,7 +683,8 @@ class MainViewModel @Inject constructor(
             if (bean == null) {
                 list.add(CardBean(card, 1))
             } else {
-                bean.count = if (insert) bean.count + 1 else bean.count - 1
+                val newCount = if (!insert) bean.count - 1 else bean.count + 1
+                list[list.indexOf(bean)] = bean.updateCount(newCount)
             }
 
             if (bean?.count == 3) {

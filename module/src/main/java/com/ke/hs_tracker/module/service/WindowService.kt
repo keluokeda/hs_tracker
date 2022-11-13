@@ -88,7 +88,8 @@ class WindowService : LifecycleService() {
 
         lifecycleScope.launch {
             deckCardObserver.deckCardList.collect {
-                adapter.setList(it)
+//                adapter.setList(it)
+                adapter.setDiffNewData(it.toMutableList())
             }
         }
 

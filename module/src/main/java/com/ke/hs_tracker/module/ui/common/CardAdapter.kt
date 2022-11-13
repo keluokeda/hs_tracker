@@ -2,6 +2,7 @@ package com.ke.hs_tracker.module.ui.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.ke.hs_tracker.module.bindCard
 import com.ke.hs_tracker.module.databinding.ModuleItemCardBinding
 import com.ke.hs_tracker.module.entity.CardBean
@@ -10,28 +11,19 @@ import com.ke.mvvm.base.ui.BaseViewBindingAdapter
 class CardAdapter : BaseViewBindingAdapter<CardBean, ModuleItemCardBinding>() {
 
 
-    init {
-        setOnItemClickListener { _, _, position ->
-//            val item = getItem(position)
 
-//            showCardImageDialog(context,item.card.id)
-//            val binding = ModuleDialogCardPreviewBinding.inflate(LayoutInflater.from(context))
-//            AlertDialog.Builder(context)
-//                .show().apply {
-//                    window?.run {
-//                        setContentView(binding.root)
-//                        binding.root.setOnClickListener {
-//                            dismiss()
-//                        }
-//                        //去掉对话框的白色背景
-//                        setBackgroundDrawableResource(android.R.color.transparent)
-//                    }
-//                }
-//            Glide.with(binding.image)
-//                .load("https://art.hearthstonejson.com/v1/render/latest/zhCN/512x/${item.card.id}.png")
-//                .placeholder(R.mipmap.ic_launcher)
-//                .into(binding.image)
-        }
+    init {
+
+        setDiffCallback(object : DiffUtil.ItemCallback<CardBean>() {
+            override fun areItemsTheSame(oldItem: CardBean, newItem: CardBean): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: CardBean, newItem: CardBean): Boolean {
+                return oldItem == newItem
+            }
+
+        })
     }
 
     override fun bindItem(

@@ -38,8 +38,8 @@ class ParseDeckCodeUseCase
             val id = getVarInt(byteList)
             val hero =
                 findByDbfId(id, allCards) ?: throw IllegalArgumentException("找不到id为 $id  的卡牌")
-            hero.count = heroCount
-            cardList.add(hero)
+//            hero.count = heroCount
+            cardList.add(hero.updateCount(heroCount))
         }
 
         for (i in 1..3) {
@@ -56,8 +56,8 @@ class ParseDeckCodeUseCase
                 val jsonObject =
                     findByDbfId(dbfId, allCards)
                         ?: throw IllegalArgumentException("找不到id为 $dbfId  的卡牌")
-                jsonObject.count = count
-                cardList.add(jsonObject)
+//                jsonObject.count = count
+                cardList.add(jsonObject.updateCount(count))
             }
         }
 
