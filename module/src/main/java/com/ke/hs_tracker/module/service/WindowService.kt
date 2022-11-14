@@ -6,7 +6,6 @@ import android.os.IBinder
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup.LayoutParams
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -54,8 +53,8 @@ class WindowService : LifecycleService() {
             layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
-        layoutParams.width = 400
-        layoutParams.height = LayoutParams.WRAP_CONTENT
+        layoutParams.width = resources.getDimension(R.dimen.module_floating_window_width).toInt()
+        layoutParams.height = resources.getDimension(R.dimen.module_floating_window_height).toInt()
         //需要设置 这个 不然空白地方无法点击
         layoutParams.flags =
             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -66,6 +65,10 @@ class WindowService : LifecycleService() {
         windowManager.addView(binding.root, layoutParams)
 
         binding.recyclerView.adapter = deckAdapter
+
+        binding.scale.setOnTouchListener(
+            ScaleTouchListener(windowManager, binding.root, layoutParams)
+        )
 
 //        binding.zoom.setOnClickListener {
 //            binding.recyclerView.isVisible = !binding.recyclerView.isVisible
