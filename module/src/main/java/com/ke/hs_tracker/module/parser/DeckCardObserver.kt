@@ -2,6 +2,7 @@ package com.ke.hs_tracker.module.parser
 
 import android.content.Context
 import androidx.documentfile.provider.DocumentFile
+import com.ke.hs_tracker.module.db.GameDao
 import com.ke.hs_tracker.module.domain.GetAllCardUseCase
 import com.ke.hs_tracker.module.domain.GetRealLogDirUseCase
 import com.ke.hs_tracker.module.domain.ParseDeckCodeUseCase
@@ -47,6 +48,7 @@ class DeckCardObserverImpl @Inject constructor(
     private val getAllCardUseCase: GetAllCardUseCase,
     private val parseDeckCodeUseCase: ParseDeckCodeUseCase,
     private val getLogDirUseCase: GetRealLogDirUseCase,
+    private val gameDao: GameDao,
     @ApplicationContext private val context: Context
 ) : DeckCardObserver {
 
@@ -176,7 +178,13 @@ class DeckCardObserverImpl @Inject constructor(
                         it.game.apply {
                             userDeckCode = currentUserDeck?.code ?: ""
                             userDeckName = currentUserDeck?.name ?: ""
+                            scope.launch {
+                                gameDao.insert(this@apply)
+                            }
                         }
+
+
+
 
                         powerFileObserver.reset()
                     }

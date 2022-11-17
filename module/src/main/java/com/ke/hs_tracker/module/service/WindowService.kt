@@ -44,6 +44,8 @@ class WindowService : LifecycleService() {
     @Inject
     lateinit var deckCardObserver: DeckCardObserver
 
+    private var showList = false
+
 
     private fun showView() {
         val layoutParams = WindowManager.LayoutParams()
@@ -54,7 +56,9 @@ class WindowService : LifecycleService() {
         }
 
         layoutParams.width = resources.getDimension(R.dimen.module_floating_window_width).toInt()
-        layoutParams.height = resources.getDimension(R.dimen.module_floating_window_height).toInt()
+        layoutParams.height =
+//            LayoutParams.WRAP_CONTENT
+            resources.getDimension(R.dimen.module_floating_window_height).toInt()
         //需要设置 这个 不然空白地方无法点击
         layoutParams.flags =
             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -70,9 +74,17 @@ class WindowService : LifecycleService() {
             ScaleTouchListener(windowManager, binding.root, layoutParams)
         )
 
-//        binding.zoom.setOnClickListener {
+        binding.hide.setOnClickListener {
 //            binding.recyclerView.isVisible = !binding.recyclerView.isVisible
-//        }
+            layoutParams.height = if (showList) {
+                resources.getDimension(R.dimen.module_floating_window_height).toInt()
+            } else {
+                resources.getDimension(R.dimen.module_floating_window_header_height).toInt()
+            }
+            windowManager.updateViewLayout(binding.root, layoutParams)
+
+            showList = !showList
+        }
 
         binding.close.setOnClickListener {
             windowManager.removeView(binding.root)
@@ -91,17 +103,21 @@ class WindowService : LifecycleService() {
                 position: Int,
                 id: Long
             ) {
-                when (position) {
+                val adapter = when (position) {
                     0 -> {
-                        binding.recyclerView.adapter = deckAdapter
+                        deckAdapter
                     }
                     1 -> {
-                        binding.recyclerView.adapter = graveyardAdapter
+                        graveyardAdapter
                     }
                     2 -> {
-                        binding.recyclerView.adapter = opponentGraveyardAdapter
+                        opponentGraveyardAdapter
                     }
+                    else -> throw  IllegalArgumentException("错误的position $position")
                 }
+
+                binding.recyclerView.adapter = adapter
+                windowManager.updateViewLayout(binding.root, layoutParams)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

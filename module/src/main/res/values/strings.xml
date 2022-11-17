@@ -140,4 +140,5 @@
     <string name="module_floating_window">Floating Window</string>
     <string name="module_floating_track">Floating Window</string>
     <string name="module_github_address">https://github.com/keluokeda/hs_tracker</string>
+    <string name="module_support">Support</string>
 </resources>

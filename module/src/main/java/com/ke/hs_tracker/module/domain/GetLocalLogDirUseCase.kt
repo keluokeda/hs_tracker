@@ -32,6 +32,6 @@ class GetLocalLogDirUseCase @Inject constructor(
         val powerFile = File(logsDir, "Power.log")
         powerFile.createNewFile()
 
-        return context.findHSDataFilesDir(context.packageName, "Logs")
+        return context.findHSDataFilesDir("Logs")
     }
 }

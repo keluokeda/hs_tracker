@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
@@ -26,6 +25,12 @@
         android:label="@string/module_app_name"
         android:resizeableActivity="true"
         android:theme="@style/module_Theme.Hs_tracker">
+        <activity
+            android:name=".ui.support.SupportActivity"
+            android:exported="false">
+
+        </activity>
+
         <service
             android:name=".service.WindowService"
             android:enabled="true"

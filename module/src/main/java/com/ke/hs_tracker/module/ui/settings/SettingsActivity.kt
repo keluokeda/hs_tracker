@@ -11,6 +11,7 @@ import com.ke.hs_tracker.module.data.PreferenceStorage
 import com.ke.hs_tracker.module.databinding.ModuleActivitySettingsBinding
 import com.ke.hs_tracker.module.ui.deck.DeckCodeParserActivity
 import com.ke.hs_tracker.module.ui.migrate.MigrateMainActivity
+import com.ke.hs_tracker.module.ui.support.SupportActivity
 import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
 import com.ke.hs_tracker.module.ui.test.TestActivity
 import com.ke.hs_tracker.module.ui.theme.ThemeActivity
@@ -99,6 +100,10 @@ class SettingsActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(getString(R.string.module_github_address))
             startActivity(intent)
+        }
+
+        binding.support.setOnClickListener {
+            startActivity(Intent(this, SupportActivity::class.java))
         }
     }
 

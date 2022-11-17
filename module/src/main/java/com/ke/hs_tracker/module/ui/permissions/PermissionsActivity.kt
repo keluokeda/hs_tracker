@@ -20,8 +20,6 @@ import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import com.ke.hs_tracker.module.*
 import com.ke.hs_tracker.module.databinding.ModuleActivityPermissionsBinding
-import com.ke.hs_tracker.module.ui.main.MainActivity
-import com.ke.hs_tracker.module.ui.sync.SyncCardDataActivity
 import com.ke.hs_tracker.module.ui.writeconfig.WriteConfigActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -178,7 +176,7 @@ class RequestAccessDataDir : ActivityResultContract<Unit, Uri?>() {
                 or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
                 or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-        val documentFile = DocumentFile.fromTreeUri(context.applicationContext, DATA_DIR_URI)!!
+        val documentFile = DocumentFile.fromTreeUri(context.applicationContext, HS_DATA_FILE_DIR)!!
         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, documentFile.uri)
 
         return intent

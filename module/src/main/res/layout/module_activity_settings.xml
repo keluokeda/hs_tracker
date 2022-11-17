@@ -179,7 +179,18 @@
         android:layout_height="1dp"
         android:background="@color/module_divider" />
 
+    <TextView
+        android:id="@+id/support"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="?selectableItemBackground"
+        android:padding="16dp"
+        android:text="@string/module_support" />
+
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_source"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

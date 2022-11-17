@@ -138,5 +138,6 @@
     <string name="module_floating_window">悬浮窗</string>
     <string name="module_floating_track">悬浮窗记牌</string>
     <string name="module_github_address">https://github.com/keluokeda/hs_tracker</string>
+    <string name="module_support">赞助</string>
 
 </resources>

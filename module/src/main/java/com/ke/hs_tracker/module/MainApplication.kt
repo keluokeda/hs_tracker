@@ -98,7 +98,7 @@ val Context.hasAllPermissions: Boolean
  */
 val Context.canReadDataDir: Boolean
     get() {
-        return DocumentFile.fromTreeUri(applicationContext, DATA_DIR_URI)?.canRead() ?: false
+        return DocumentFile.fromTreeUri(applicationContext, HS_DATA_FILE_DIR)?.canRead() ?: false
     }
 
 /**
@@ -113,12 +113,14 @@ fun isExternalStorageManager(): Boolean {
     }
 }
 
-val DATA_DIR_URI =
-    Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fdata")!!
-
 const val HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone"
 
-const val HUAWEI_HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone.cn.huawei"
+
+val HS_DATA_FILE_DIR =
+    Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fdata%2F${HS_APPLICATION_ID}")!!
+
+
+//const val HUAWEI_HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone.cn.huawei"
 
 /**
  * 写入log.config文件
@@ -159,29 +161,30 @@ suspend fun Context.writeLogConfigFile(forceWrite: Boolean = false): Boolean {
 fun Context.findHSDataFilesDir(
 
     fileName: String? = null,
-    applicationId: String
-    = HS_APPLICATION_ID,
-): DocumentFile? {
+
+    ): DocumentFile? {
 
     DocumentFile.fromTreeUri(
         applicationContext,
-        DATA_DIR_URI
+        HS_DATA_FILE_DIR
     )?.apply {
-        listFiles().forEach {
-            if (it.name == applicationId) {
-                val filesDir = it.findFile("files") ?: return null
-                return if (fileName == null) filesDir else filesDir.findFile(
-                    fileName
-                )
-            }
-        }
+//        listFiles().forEach {
+//            if (it.name == applicationId) {
+        val filesDir = this.findFile("files") ?: return null
+        return if (fileName == null) filesDir else filesDir.findFile(
+            fileName
+        )
+//            }
+//        }
     }
 
-    if (applicationId == HUAWEI_HS_APPLICATION_ID) {
-        return null
-    }
+    return null
 
-    return findHSDataFilesDir(fileName, HUAWEI_HS_APPLICATION_ID)
+//    if (applicationId == HUAWEI_HS_APPLICATION_ID) {
+//        return null
+//    }
+//
+//    return findHSDataFilesDir(fileName, HUAWEI_HS_APPLICATION_ID)
 
 
 }

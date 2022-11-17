@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#33000000"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:layout_width="@dimen/module_floating_window_width">
 
 
     <View
@@ -20,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/zoom"
+        android:id="@+id/drag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
@@ -36,13 +38,24 @@
         android:contentDescription="@null"
         android:padding="8dp"
         android:src="@drawable/module_baseline_clear_red_500_24dp"
-        app:layout_constraintStart_toEndOf="@id/zoom"
-        app:layout_constraintTop_toTopOf="@id/zoom" />
+        app:layout_constraintStart_toEndOf="@id/drag"
+        app:layout_constraintTop_toTopOf="@id/drag" />
+
+    <ImageView
+        android:id="@+id/hide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:padding="8dp"
+        android:src="@drawable/module_baseline_zoom_out_map_white_24dp"
+        app:layout_constraintStart_toEndOf="@id/close"
+        app:layout_constraintTop_toTopOf="@id/close" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/module_white"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="@id/close"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +68,7 @@
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/zoom"
+        app:layout_constraintTop_toBottomOf="@id/drag"
         tools:itemCount="100"
         tools:listitem="@layout/module_item_card" />
 
