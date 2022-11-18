@@ -1,25 +1,20 @@
 package com.ke.hs_tracker.module.ui.permissions
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.DocumentsContract
-import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
-import com.ke.hs_tracker.module.*
+import com.ke.hs_tracker.module.HS_DATA_FILE_DIR
+import com.ke.hs_tracker.module.R
+import com.ke.hs_tracker.module.canReadDataDir
 import com.ke.hs_tracker.module.databinding.ModuleActivityPermissionsBinding
+import com.ke.hs_tracker.module.hasAllPermissions
 import com.ke.hs_tracker.module.ui.writeconfig.WriteConfigActivity
 import com.ke.mvvm.base.ui.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,10 +51,10 @@ class PermissionsActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-
-            }
+//        val requestPermissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+//
+//            }
 
         val requestAccessDataDirLauncher = registerForActivityResult(RequestAccessDataDir()) {
             if (it != null) {
@@ -70,22 +65,22 @@ class PermissionsActivity : AppCompatActivity() {
             }
         }
 
-        binding.step3.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+//        binding.step3.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val launcher = registerForActivityResult(RequestManageAllFilesAccessPermission()) {
-
-            }
-            binding.step3.setOnClickListener {
-                launcher.launch(Unit)
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            val launcher = registerForActivityResult(RequestManageAllFilesAccessPermission()) {
+//
+//            }
+//            binding.step3.setOnClickListener {
+//                launcher.launch(Unit)
+//            }
+//        }
 
         val onClickListener = View.OnClickListener {
             when (it) {
-                binding.step1 -> {
-                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
+//                binding.step1 -> {
+//                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                }
                 binding.step2 -> {
                     requestAccessDataDirLauncher.launch(Unit)
                 }
@@ -97,7 +92,7 @@ class PermissionsActivity : AppCompatActivity() {
             }
         }
 
-        binding.step1.setOnClickListener(onClickListener)
+//        binding.step1.setOnClickListener(onClickListener)
         binding.step2.setOnClickListener(onClickListener)
         binding.next.setOnClickListener(onClickListener)
     }
@@ -107,25 +102,25 @@ class PermissionsActivity : AppCompatActivity() {
 
         binding.next.isEnabled = hasAllPermissions
 
-        val hasPermission =
-            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        if (hasPermission) {
-            binding.step1.isEnabled = false
-            binding.step1.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.module_baseline_done_green_500_24dp,
-                0
-            )
-        } else {
-            binding.step1.isEnabled = true
-            binding.step1.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.module_baseline_keyboard_arrow_right_grey_500_24dp,
-                0
-            )
-        }
+//        val hasPermission =
+//            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+//        if (hasPermission) {
+//            binding.step1.isEnabled = false
+//            binding.step1.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                0,
+//                0,
+//                R.drawable.module_baseline_done_green_500_24dp,
+//                0
+//            )
+//        } else {
+//            binding.step1.isEnabled = true
+//            binding.step1.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                0,
+//                0,
+//                R.drawable.module_baseline_keyboard_arrow_right_grey_500_24dp,
+//                0
+//            )
+//        }
 
         if (canReadDataDir) {
             binding.step2.isEnabled = false
@@ -145,25 +140,25 @@ class PermissionsActivity : AppCompatActivity() {
             )
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (isExternalStorageManager()) {
-                binding.step3.isEnabled = false
-                binding.step3.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.module_baseline_done_green_500_24dp,
-                    0
-                )
-            } else {
-                binding.step3.isEnabled = true
-                binding.step3.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.module_baseline_keyboard_arrow_right_grey_500_24dp,
-                    0
-                )
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            if (isExternalStorageManager()) {
+//                binding.step3.isEnabled = false
+//                binding.step3.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                    0,
+//                    0,
+//                    R.drawable.module_baseline_done_green_500_24dp,
+//                    0
+//                )
+//            } else {
+//                binding.step3.isEnabled = true
+//                binding.step3.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                    0,
+//                    0,
+//                    R.drawable.module_baseline_keyboard_arrow_right_grey_500_24dp,
+//                    0
+//                )
+//            }
+//        }
     }
 
 
@@ -188,16 +183,16 @@ class RequestAccessDataDir : ActivityResultContract<Unit, Uri?>() {
 
 }
 
-@RequiresApi(Build.VERSION_CODES.R)
-class RequestManageAllFilesAccessPermission : ActivityResultContract<Unit, Boolean>() {
-    override fun createIntent(context: Context, input: Unit): Intent {
-        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-        intent.data = Uri.parse("package:${context.packageName}")
-        return intent
-    }
-
-    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
-        return Environment.isExternalStorageManager()
-    }
-
-}
+//@RequiresApi(Build.VERSION_CODES.R)
+//class RequestManageAllFilesAccessPermission : ActivityResultContract<Unit, Boolean>() {
+//    override fun createIntent(context: Context, input: Unit): Intent {
+//        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+//        intent.data = Uri.parse("package:${context.packageName}")
+//        return intent
+//    }
+//
+//    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
+//        return Environment.isExternalStorageManager()
+//    }
+//
+//}

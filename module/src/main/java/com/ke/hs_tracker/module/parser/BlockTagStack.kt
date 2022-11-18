@@ -426,7 +426,7 @@ class BlockTagStackImpl @Inject constructor() : BlockTagStack {
 
         if (first == null) {
 
-            throw RuntimeException("列表的第一个应该是Block，但现在是不是")
+            throw RuntimeException("列表的第一个应该是Block，但现在是不是 现在是 $header,当前列表为 $source")
         }
         source.removeLast()
 

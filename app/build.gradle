@@ -13,8 +13,8 @@ android {
         applicationId "com.ke.hs_tracker.app"
         minSdk libs.versions.minsdk.get().toInteger()
         targetSdk libs.versions.targetsdk.get().toInteger()
-        versionCode 21
-        versionName "1.2.1"
+        versionCode 23
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

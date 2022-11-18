@@ -2,7 +2,7 @@
     <string name="module_app_name">炉石记牌器</string>
     <string name="module_set_permissions">设置权限</string>
     <string name="module_permissions_step_1">1，打开存储权限</string>
-    <string name="module_permissions_step_2">2，允许访问data目录</string>
+    <string name="module_permissions_step_2">1，允许访问data目录</string>
     <string name="module_permissions_step_3">3，允许管理外部存储</string>
     <string name="module_next">下一步</string>
     <string name="module_permissions_step_4">4，写入配置文件</string>

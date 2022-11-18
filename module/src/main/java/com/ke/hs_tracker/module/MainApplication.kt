@@ -1,16 +1,12 @@
 package com.ke.hs_tracker.module
 
-import android.Manifest
 import android.app.Application
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.documentfile.provider.DocumentFile
 import com.bumptech.glide.Glide
@@ -85,12 +81,13 @@ fun String.log() {
  */
 val Context.hasAllPermissions: Boolean
     get() {
-        val canWriteExternalStorage = ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-
-        return canWriteExternalStorage && canReadDataDir && isExternalStorageManager()
+//        val canWriteExternalStorage = ActivityCompat.checkSelfPermission(
+//            this,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        ) == PackageManager.PERMISSION_GRANTED
+//
+//        return canWriteExternalStorage && canReadDataDir && isExternalStorageManager()
+        return canReadDataDir
     }
 
 /**
@@ -104,14 +101,14 @@ val Context.canReadDataDir: Boolean
 /**
  * 是否具备外部存储管理权限，如果android版本低于11就返回true
  */
-fun isExternalStorageManager(): Boolean {
-
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        Environment.isExternalStorageManager()
-    } else {
-        return true
-    }
-}
+//fun isExternalStorageManager(): Boolean {
+//
+//    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//        Environment.isExternalStorageManager()
+//    } else {
+//        return true
+//    }
+//}
 
 const val HS_APPLICATION_ID = "com.blizzard.wtcg.hearthstone"
 

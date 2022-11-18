@@ -19,19 +19,19 @@
             app:titleTextColor="@color/module_white" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/step1"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/module_permissions_step_1"
-        app:drawableEndCompat="@drawable/module_baseline_done_green_500_24dp" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/step1"-->
+    <!--        style="@style/TextAppearance.MaterialComponents.Subtitle1"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="16dp"-->
+    <!--        android:text="@string/module_permissions_step_1"-->
+    <!--        app:drawableEndCompat="@drawable/module_baseline_done_green_500_24dp" />-->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ccc" />
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="1dp"-->
+    <!--        android:background="#ccc" />-->
 
     <TextView
         android:id="@+id/step2"
@@ -47,14 +47,14 @@
         android:layout_height="1dp"
         android:background="#ccc" />
 
-    <TextView
-        android:id="@+id/step3"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/module_permissions_step_3"
-        app:drawableEndCompat="@drawable/module_baseline_done_green_500_24dp" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/step3"-->
+    <!--        style="@style/TextAppearance.MaterialComponents.Subtitle1"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="16dp"-->
+    <!--        android:text="@string/module_permissions_step_3"-->
+    <!--        app:drawableEndCompat="@drawable/module_baseline_done_green_500_24dp" />-->
 
 
     <Button

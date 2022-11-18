@@ -2,7 +2,7 @@
     <string name="module_app_name">hs tracker</string>
     <string name="module_set_permissions">set permissions</string>
     <string name="module_permissions_step_1">1,open write external storage permission</string>
-    <string name="module_permissions_step_2">2,allow access data dir</string>
+    <string name="module_permissions_step_2">1,allow access data dir</string>
     <string name="module_permissions_step_3">3,allow manage external storage</string>
     <string name="module_next">next</string>
     <string name="module_permissions_step_4">4,write config file</string>
