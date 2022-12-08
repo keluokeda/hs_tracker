@@ -18,7 +18,6 @@ import com.ke.hs_tracker.module.parser.PowerParserImpl
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import com.tencent.bugly.crashreport.CrashReport
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,7 +34,7 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        CrashReport.initCrashReport(applicationContext, "abb84be20b", false)
+//        CrashReport.initCrashReport(applicationContext, "abb84be20b", false)
         AppCompatDelegate.setDefaultNightMode(preferenceStorage.theme)
         Logger.addLogAdapter(
             AndroidLogAdapter(

@@ -27,7 +27,7 @@ data class Card(
     val dbfId: Int,
     val text: String = "",
     //属于哪个版本 例如 TGT
-    val set: String,
+    val set: String = "",
     val type: CardType = CardType.None,
     val cardClass: CardClass? = null,
     val classes: List<CardClass> = emptyList(),

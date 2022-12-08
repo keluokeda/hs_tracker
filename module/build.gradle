@@ -94,7 +94,7 @@ dependencies {
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
 
-    implementation 'com.tencent.bugly:crashreport:latest.release'
+//    implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // optional - helpers for implementing LifecycleOwner in a Service

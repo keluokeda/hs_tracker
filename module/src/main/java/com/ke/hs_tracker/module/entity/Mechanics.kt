@@ -381,6 +381,11 @@ enum class Mechanics {
     IgnoreHideStatsForBigCard,
 
     Summoned,
+
+    /**
+     * 法力渴求
+     */
+    ManaThirst,
 }
 
 

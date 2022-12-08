@@ -138,6 +138,8 @@ class DeckCardObserverImpl @Inject constructor(
 
         val powerFileObserver = PowerFileObserver(interval) {
             getFileStream(powerFileName)
+        }.apply {
+
         }
 
         scope.launch {
@@ -147,7 +149,7 @@ class DeckCardObserverImpl @Inject constructor(
                 .start()
                 .flowOn(Dispatchers.IO)
                 .map {
-//                currentUserDeck = it
+                    currentUserDeck = it
                     parseDeckCodeUseCase(it.code).successOr(emptyList())
                 }.collect {
                     currentDeckList = it
@@ -193,7 +195,7 @@ class DeckCardObserverImpl @Inject constructor(
                         _userGraveyardCardList.value = emptyList()
                         _opponentGraveyardCardList.value = emptyList()
 //                        deckLeftCardList = currentDeckList
-                        "清空卡牌 OnGameStart ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size}".log()
+//                        "清空卡牌 OnGameStart ,deckLeftCardList ${deckLeftCardList.size} , currentDeckList ${currentDeckList.size}".log()
 //                        deckLeftCardList.clear()
 //                        deckLeftCardList.addAll(currentDeckList)
                         deckLeftCardList = currentDeckList.toList()
@@ -293,7 +295,7 @@ class DeckCardObserverImpl @Inject constructor(
             return
         }
 
-        "牌库的卡牌发生了变化 $card $remove ".log()
+//        "牌库的卡牌发生了变化 $card $remove ".log()
 
         val bean = deckLeftCardList.find {
             it.card.id == card.id

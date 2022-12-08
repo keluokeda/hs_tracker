@@ -144,6 +144,11 @@ class WindowService : LifecycleService() {
 
         deckCardObserver.init(lifecycleScope)
 
+//        lifecycleScope.launch {
+//            delay(5000)
+//            throw RuntimeException("测试异常")
+//        }
+
 
         lifecycleScope.launch {
             deckCardObserver.deckCardList.collect {

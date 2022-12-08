@@ -1,10 +1,14 @@
 package com.ke.hs_tracker.module.parser
 
 import com.ke.hs_tracker.module.db.Game
+import com.ke.hs_tracker.module.domain.GetAllCardUseCase
 import com.ke.hs_tracker.module.entity.*
 import com.ke.hs_tracker.module.log
+import com.ke.mvvm.base.data.successOr
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -26,7 +30,17 @@ interface PowerTagHandler {
 }
 
 class PowerTagHandlerImpl @Inject constructor(
+    private val getAllCardUseCase: GetAllCardUseCase
 ) : PowerTagHandler {
+
+    lateinit var allCard: List<Card>
+
+
+    init {
+        GlobalScope.launch {
+            allCard = getAllCardUseCase(Unit).successOr(emptyList())
+        }
+    }
 
 
     private val _gameEventFlow =
@@ -354,16 +368,20 @@ class PowerTagHandlerImpl @Inject constructor(
 
 
     private fun handleFullEntity(fullEntity: PowerTag.PowerTaskList.FullEntity) {
-//        fullEntity.isUpdateHero()?.apply {
-//            val cardClass = allCard.find {
-//                it.id == second
-//            }?.cardClass ?: return
-//            if (first == user?.id) {
-//                game.userHero = cardClass
-//            } else if (first == opponent?.id) {
-//                game.opponentHero = cardClass
-//            }
-//        }
+        fullEntity.isUpdateHero()?.apply {
+
+            val cardClass = allCard.find {
+                it.id == second
+            }?.cardClass ?: return
+
+            "更新英雄 $this $cardClass".log()
+
+            if (first == user?.id) {
+                game.userHero = cardClass
+            } else if (first == opponent?.id) {
+                game.opponentHero = cardClass
+            }
+        }
     }
 }
 

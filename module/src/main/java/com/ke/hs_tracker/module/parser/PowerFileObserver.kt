@@ -2,7 +2,6 @@ package com.ke.hs_tracker.module.parser
 
 
 import android.os.Looper
-import com.ke.hs_tracker.module.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,41 +20,58 @@ class PowerFileObserver(
         oldLogSize = 0
     }
 
+
     suspend fun start(): Flow<List<String>> = flow {
         if (Thread.currentThread() == Looper.getMainLooper().thread) {
             throw RuntimeException("不能运行在主线程")
         }
 
+        delay(interval)
+
+
         while (true) {
 
 
-            fileInputStreamProvider()?.reader()?.apply {
-                val start = System.currentTimeMillis()
-                if (oldLogSize > 0) {
-                    skip(oldLogSize)
-                }
-                val text =
-//                    readLines()
-                    readText()
-
-                oldLogSize += text.length
-                val lines = text.lines()
-                    .filter {
-                        it.startsWith("D", true)
+            fileInputStreamProvider()
+                ?.reader()
+                ?.apply {
+                    if (oldLogSize > 0) {
+                        skip(oldLogSize)
                     }
-//                    .filter { it.isNotEmpty() }
-//                oldLogSize += if (text.isEmpty()) 0 else text.map { it.length }
-//                    .reduce { acc, i -> acc + i }
 
-//                "本次读取花费时间 = ${System.currentTimeMillis() - start} ，处理的数据 = $lines".log()
+                    val text = readText()
+//                        try {
+//                        readText()
+//                    } catch (error: Throwable) {
+//                        if (BuildConfig.DEBUG) {
+//                            error.printStackTrace()
+//                        }
+//                        val size = fileInputStreamProvider()?.available() ?: 0
+//                        Logger.d("内存溢出了 ，文件大小 $size,当前oldLogSize = $oldLogSize")
+//                        oldLogSize += size
+//
+//                        readLines()
+//                        ""
+//                    }
+//                    readLines()
+//                    readTextFromFile()
 
-                emit(lines)
+                    oldLogSize += text.length
+                    val lines = text.lines()
+                        .filter {
+                            it.startsWith("D", true)
+                        }
 
-                close()
-            }
+
+                    emit(lines)
+
+                    close()
+                }
             delay(interval)
         }
     }
 
 
 }
+
+

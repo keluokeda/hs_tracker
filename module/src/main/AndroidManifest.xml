@@ -19,6 +19,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/module_app_name"
         android:resizeableActivity="true"
+        android:largeHeap="true"
         android:theme="@style/module_Theme.Hs_tracker">
         <activity
             android:name=".ui.support.SupportActivity"

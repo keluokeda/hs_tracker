@@ -80,6 +80,7 @@ class SummaryActivity : AppCompatActivity() {
 //            startActivity(Intent(this, MainActivity::class.java))
 //            startService(Intent(this, WindowService::class.java))
 
+
             if (preferenceStorage.floatingEnable) {
                 //
                 if (Settings.canDrawOverlays(applicationContext)) {

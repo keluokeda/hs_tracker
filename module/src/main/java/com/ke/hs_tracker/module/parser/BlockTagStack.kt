@@ -1,6 +1,7 @@
 package com.ke.hs_tracker.module.parser
 
 import com.ke.hs_tracker.module.entity.*
+import com.orhanobut.logger.Logger
 import java.util.*
 import javax.inject.Inject
 
@@ -78,6 +79,11 @@ class BlockTagStackImpl @Inject constructor() : BlockTagStack {
         matchResult = PowerParserImpl.BLOCK_END_PATTERN.matchEntire(line)
         if (matchResult != null) {
             //块结束了
+            if (nestedTagList.isEmpty()) {
+                Logger.d("准备插入一个end到空的列表里面")
+                return InsertStackResult.Success
+            }
+
             nestedTagList.add(NestedTag.BlockEnd)
 //            val blockStartList = nestedTagList.filterIsInstance<NestedTag.Block>()
             val blockCount = nestedTagList.count {
@@ -189,7 +195,9 @@ class BlockTagStackImpl @Inject constructor() : BlockTagStack {
 
 
         nestedTagList.map {
-            it as NestedTag.Tag
+            val result =
+                it as? NestedTag.Tag ?: throw IllegalArgumentException("错误的类型，应该是Tag 但现在是 $it")
+            result
         }.forEach {
             map[it.key] = it.value
         }
@@ -425,6 +433,7 @@ class BlockTagStackImpl @Inject constructor() : BlockTagStack {
         val first = header as? NestedTag.Block
 
         if (first == null) {
+
 
             throw RuntimeException("列表的第一个应该是Block，但现在是不是 现在是 $header,当前列表为 $source")
         }

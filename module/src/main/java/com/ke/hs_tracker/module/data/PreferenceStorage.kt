@@ -16,6 +16,8 @@ interface PreferenceStorage {
     var saveLogFile: Boolean
 
     var floatingEnable: Boolean
+
+    var crash: String?
 }
 
 class PreferenceStorageImpl @Inject constructor(
@@ -48,9 +50,16 @@ class PreferenceStorageImpl @Inject constructor(
             mmkv.putBoolean(KEY_FLOATING_ENABLE, value)
         }
 
+    override var crash: String?
+        get() = mmkv.getString(KEY_CRASH, null)
+        set(value) {
+            mmkv.putString(KEY_CRASH, value)
+        }
+
     companion object {
         private const val KEY_THEME = "KEY_THEME"
         private const val KEY_SAVE_LOG_FILE = "KEY_SAVE_LOG_FILE"
         private const val KEY_FLOATING_ENABLE = "KEY_FLOATING_ENABLE"
+        private const val KEY_CRASH = "KEY_CRASH"
     }
 }
