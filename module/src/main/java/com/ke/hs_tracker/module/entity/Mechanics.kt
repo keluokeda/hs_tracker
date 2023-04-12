@@ -386,6 +386,8 @@ enum class Mechanics {
      * 法力渴求
      */
     ManaThirst,
+
+    OVERHEAL
 }
 
 
