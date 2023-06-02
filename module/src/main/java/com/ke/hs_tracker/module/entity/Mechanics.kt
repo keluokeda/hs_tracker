@@ -387,7 +387,11 @@ enum class Mechanics {
      */
     ManaThirst,
 
-    OVERHEAL
+    OVERHEAL,
+
+    VENOMOUS,
+
+    MAGNETIC
 }
 
 

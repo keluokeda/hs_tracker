@@ -3,7 +3,6 @@ package com.ke.hs_tracker.module
 import android.app.Application
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -18,15 +17,14 @@ import com.ke.hs_tracker.module.parser.PowerParserImpl
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 
-@HiltAndroidApp
-class MainApplication : Application() {
+abstract class MainApplication : Application() {
 
 
     @Inject
@@ -43,7 +41,6 @@ class MainApplication : Application() {
                     .build()
             )
         )
-        Build.BRAND.log()
     }
 }
 

@@ -2,10 +2,12 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
 }
-
+kapt {
+    correctErrorTypes true
+}
 android {
     compileSdk libs.versions.compilesdk.get().toInteger()
 
@@ -13,8 +15,8 @@ android {
         applicationId "com.ke.hs_tracker.app"
         minSdk libs.versions.minsdk.get().toInteger()
         targetSdk libs.versions.targetsdk.get().toInteger()
-        versionCode 27
-        versionName "1.2.7"
+        versionCode 29
+        versionName "1.2.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -48,12 +50,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+
+    namespace 'com.ke.hs_tracker.app'
 
 
 }
@@ -88,4 +89,6 @@ dependencies {
     implementation(libs.moshi)
     kapt(libs.moshi.codegen)
 
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
