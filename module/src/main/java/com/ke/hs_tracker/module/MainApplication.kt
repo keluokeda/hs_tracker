@@ -164,6 +164,9 @@ fun Context.findHSDataFilesDir(
 //        listFiles().forEach {
 //            if (it.name == applicationId) {
         val filesDir = this.findFile("files") ?: return null
+
+
+
         return if (fileName == null) filesDir else filesDir.findFile(
             fileName
         )
