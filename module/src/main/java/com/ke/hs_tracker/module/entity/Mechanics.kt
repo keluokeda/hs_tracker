@@ -391,7 +391,11 @@ enum class Mechanics {
 
     VENOMOUS,
 
-    MAGNETIC
+    MAGNETIC,
+
+    FORGE,
+
+    TITAN
 }
 
 
